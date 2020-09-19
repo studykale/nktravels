@@ -5,10 +5,16 @@
         <h2 class="has-text-weight-semibold mb-4 is-size-3">NK Travels</h2>
         <ul class="flex">
           <li class="mr-2">
-            <facebook-icon size="1.5x" class="has-text-grey-dark"></facebook-icon>
+            <facebook-icon
+              size="1.5x"
+              class="has-text-grey-dark"
+            ></facebook-icon>
           </li>
           <li>
-            <instagram-icon size="1.5x" class="has-text-grey-dark"></instagram-icon>
+            <instagram-icon
+              size="1.5x"
+              class="has-text-grey-dark"
+            ></instagram-icon>
           </li>
         </ul>
       </div>
@@ -78,7 +84,7 @@
 </template>
 
 <script>
-import { FacebookIcon, InstagramIcon  } from 'vue-feather-icons'
+import { FacebookIcon, InstagramIcon } from "vue-feather-icons";
 
 export default {
   name: "Footer",

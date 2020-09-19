@@ -1,22 +1,32 @@
 <template>
   <div class="home">
     <div class="landing-header">
-      <NavClient />
+      <div class="nav">
+        <NavClient />
+      </div>
       <div class="overlay"></div>
       <div class="landing-content">
         <div class="container">
-          <h1>Make your next trip to remember way more fun</h1>
-          <p class="has-text-white-ter is-size-5">
-            Are you hopping to your next trip? Well, Make it more safe and memorable
-            by using our trip services.
-          </p>
+          <div class="columns">
+            <div class="column is-two-fifths">
+              <h3>Make your next trip to remember way more fun</h3>
+              <p class="has-text-white-ter is-size-5">
+                Are you hopping to your next trip? Well, Make it more safe and
+                memorable by using our trip services.
+              </p>
+              <b-button
+                class="mt-4 has-text-white is-medium book-btn"
+                type="is-primary"
+                >Book your trip</b-button
+              >
+            </div>
+            <div class="column"></div>
+          </div>
         </div>
       </div>
     </div>
     <section>
-      <div class="container">
-
-      </div>
+      <div class="container"></div>
     </section>
     <section class="has-background-white pb-6 pt-6">
       <div class="container">
@@ -48,7 +58,7 @@
               </div>
               <div class="card-content">
                 <h4
-                  class="has-text-weight-semibold title is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-4  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Awesome support
                 </h4>
@@ -68,7 +78,7 @@
               </div>
               <div class="card-content p-3">
                 <h4
-                  class="has-text-weight-semibold title is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-4  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Captivating
                 </h4>
@@ -88,7 +98,7 @@
               </div>
               <div class="card-content">
                 <h4
-                  class="has-text-weight-semibold title is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-4 is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Ease and Comfort
                 </h4>
@@ -243,34 +253,33 @@ import FooterClient from "@/components/utilities/footer.vue";
 
 const customIconConfig = {
   customIconPacks: {
-    'uil': {
-        sizes: {
-            'default': 'is-size-5',
-            'is-small': '',
-            'is-medium': 'is-size-3',
-            'is-large': 'is-size-1'
-        },
-        iconPrefix: 'uil-',
-        internalIcons: {
-            'check': 'check',
-            'information': 'information',
-            'check-circle': 'checkmark-circle',
-            'alert': 'exclamation',
-            'alert-circle': 'exclamation-circle',
-            'arrow-up': 'arrow-up',
-            'chevron-right': 'angle-right',
-            'chevron-left': 'angle-left',
-            'chevron-down': 'arrow-down',
-            'eye': 'eye',
-            'eye-off': 'eye-slash',
-            'menu-down': 'angle-down',
-            'menu-up': 'angle-up',
-            'close-circle': 'times-circle'
-        }
+    uil: {
+      sizes: {
+        default: "is-size-5",
+        "is-small": "",
+        "is-medium": "is-size-3",
+        "is-large": "is-size-1"
+      },
+      iconPrefix: "uil-",
+      internalIcons: {
+        check: "check",
+        information: "information",
+        "check-circle": "checkmark-circle",
+        alert: "exclamation",
+        "alert-circle": "exclamation-circle",
+        "arrow-up": "arrow-up",
+        "chevron-right": "angle-right",
+        "chevron-left": "angle-left",
+        "chevron-down": "arrow-down",
+        eye: "eye",
+        "eye-off": "eye-slash",
+        "menu-down": "angle-down",
+        "menu-up": "angle-up",
+        "close-circle": "times-circle"
+      }
     }
   }
-}
-
+};
 
 export default {
   name: "Home",
@@ -289,8 +298,7 @@ export default {
       tab1Image: "https://source.unsplash.com/daily?savanna",
       tab2Image: "https://source.unsplash.com/weekly?hiking",
       tab3Image: "https://source.unsplash.com/weekly?forest",
-      tab4Image: "https://source.unsplash.com/weekly?jungle",
-      
+      tab4Image: "https://source.unsplash.com/weekly?jungle"
     };
   },
   created() {
@@ -303,11 +311,21 @@ export default {
 .landing-header {
   height: calc(100vh - 16rem);
   width: 100%;
-  background: url("../assets/safari.jpg") center no-repeat;
-  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("../assets/safari.jpg");
+
+  @media screen and (min-width: 520px) {
+    // background-size: cover;
+  }
 
   @media screen and (max-width: 520px) {
     height: calc(100vh - 4rem);
+  }
+
+  .nav {
+    position: absolute;
+    width: 100%;
   }
 
   .overlay {
@@ -317,6 +335,7 @@ export default {
 
     @media screen and (max-width: 520px) {
       background: rgba(255, 166, 0, 0.534);
+      background-repeat: no-repeat;
     }
   }
 
@@ -335,20 +354,20 @@ export default {
     }
   }
 
-  .landing-content h1 {
+  .landing-content h3 {
     font-family: "Montserrat", sans-serif;
     color: white;
-    font-size: 2.8rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.55em;
     text-align: center;
 
     @media screen and (min-width: 520px) {
       text-align: left;
+      font-size: 2.8rem;
     }
 
     @media screen and (min-width: 720px) {
-      width: 80%;
       text-align: left;
     }
   }
@@ -356,17 +375,23 @@ export default {
   .landing-content p {
     font-family: "Open sans", sans-serif;
     color: whitesmoke;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-align: center;
 
     @media screen and (min-width: 520px) {
-      width: 80%;
       text-align: left;
+      font-size: 1.2rem;
     }
 
     @media screen and (min-width: 720px) {
-      width: 80%;
       text-align: left;
+    }
+  }
+
+  .landing-content .book-btn {
+    @media screen and (max-width: 520px) {
+      margin: 10px auto !important;
+      display: flex;
     }
   }
 }

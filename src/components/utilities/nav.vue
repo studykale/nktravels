@@ -2,11 +2,13 @@
   <b-navbar transparent>
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
-        NK Travels
+        <h2 class="logo">
+          NK Travels
+        </h2>
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-item href="#">
+      <b-navbar-item class="has-text-weight-bold" href="#">
         Home
       </b-navbar-item>
       <b-navbar-item href="#">
@@ -46,4 +48,26 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.navbar {
+  background: transparent !important;
+  width: inherit;
+}
+
+.logo {
+  font-weight: bold;
+  color: white;
+}
+
+.navbar-item {
+  @media screen and (min-width: 1024px) {
+    color: white !important;
+  }
+}
+
+.navbar-dropdown {
+  .navbar-item {
+    color: black !important;
+  }
+}
+</style>
