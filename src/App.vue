@@ -27,6 +27,22 @@
   &.row {
     flex-direction: row;
   }
+
+  &.column {
+    flex-direction: column;
+  }
+
+  &.centered {
+    justify-content: center;
+  }
+
+  &.j-between {
+    justify-content: space-between;
+  }
+}
+
+.card.max-300 {
+  max-width: 320px;
 }
 
 // Set your colors

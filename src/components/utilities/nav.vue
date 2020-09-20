@@ -1,5 +1,5 @@
 <template>
-  <b-navbar transparent>
+  <b-navbar transparent :type="type">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <h2 class="logo">
@@ -8,13 +8,13 @@
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-item class="has-text-weight-bold" href="#">
-        Home
+      <b-navbar-item tag="router-link" to="/about">
+        About Us
       </b-navbar-item>
-      <b-navbar-item href="#">
+      <b-navbar-item tag="router-link" to="/about#gallery">
         Gallery
       </b-navbar-item>
-      <b-navbar-dropdown label="Features">
+      <b-navbar-dropdown hoverable arrowless boxed label="Features">
         <b-navbar-item href="#">
           Honey Moon
         </b-navbar-item>
@@ -30,9 +30,9 @@
     <template slot="end">
       <b-navbar-item tag="div">
         <div class="buttons">
-          <a class="button is-primary">
-            <strong>Book</strong>
-          </a>
+          <router-link to="/find-trip" class="button is-primary">
+            <strong>Find your trip</strong>
+          </router-link>
           <a class="button is-light">
             Contact Us
           </a>
@@ -44,30 +44,23 @@
 
 <script>
 export default {
-  name: "Nav"
+  name: "Nav",
+  props: {
+    type: String,
+    blacken: {
+      type: Boolean,
+      default: false
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .navbar {
-  background: transparent !important;
   width: inherit;
 }
 
 .logo {
   font-weight: bold;
-  color: white;
-}
-
-.navbar-item {
-  @media screen and (min-width: 1024px) {
-    color: white !important;
-  }
-}
-
-.navbar-dropdown {
-  .navbar-item {
-    color: black !important;
-  }
 }
 </style>

@@ -2,14 +2,21 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import Buefy from "buefy";
+import { firestorePlugin } from "vuefire";
+import VueMoment from "vue-moment";
+import VueMasonry from "vue-masonry-css";
 
-Vue.use(Buefy);
+Vue.use(VueMoment);
+Vue.use(VueMasonry);
 
 Vue.config.productionTip = false;
+Vue.use(firestorePlugin);
+
+import "./plugins/buefy";
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted: () => document.dispatchEvent(new Event("x-app-rendered"))
 }).$mount("#app");

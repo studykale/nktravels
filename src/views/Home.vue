@@ -15,9 +15,11 @@
                 memorable by using our trip services.
               </p>
               <b-button
+                tag="router-link"
+                to="/find-trip"
                 class="mt-4 has-text-white is-medium book-btn"
                 type="is-primary"
-                >Book your trip</b-button
+                >Find your trip</b-button
               >
             </div>
             <div class="column"></div>
@@ -33,13 +35,13 @@
         <div class="columns mx-2">
           <div class="column">
             <h2
-              class="has-text-black-ter is-size-2 pb-3 has-text-center-mobile is-capitalized has-text-weight-semibold is-family-sans-serif"
+              class="has-text-black-ter is-size-3 pb-3 has-text-center-mobile is-capitalized has-text-weight-semibold is-family-sans-serif"
             >
               Our Services
             </h2>
             <div class="divider rounded mb-2"></div>
             <p
-              class="has-text-grey-dark is-size-5 has-text-center-mobile is-family-primary"
+              class="has-text-grey-dark has-text-center-mobile is-family-primary"
             >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
               consectetur architecto suscipit? Magnam voluptatem accusantium id
@@ -58,7 +60,7 @@
               </div>
               <div class="card-content">
                 <h4
-                  class="has-text-weight-semibold is-size-4  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-5  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Awesome support
                 </h4>
@@ -78,7 +80,7 @@
               </div>
               <div class="card-content p-3">
                 <h4
-                  class="has-text-weight-semibold is-size-4  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-5  is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Captivating
                 </h4>
@@ -98,7 +100,7 @@
               </div>
               <div class="card-content">
                 <h4
-                  class="has-text-weight-semibold is-size-4 is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
+                  class="has-text-weight-semibold is-size-5 is-family-sans-serif mb-3 has-text-yellow-ter is-capitalized"
                 >
                   Ease and Comfort
                 </h4>
@@ -117,11 +119,13 @@
         <div class="columns mx-2">
           <div class="column is-two-fifths">
             <h4
-              class="is-text-black-ter has-text-weight-semibold is-family-sans-serif is-size-2"
+              class="is-text-black-ter has-text-weight-semibold is-family-sans-serif is-size-3"
             >
               About Us
             </h4>
-            <h5 class="is-text-black-ter is-family-primary is-size-5 mb-3">
+            <h5
+              class="is-text-black-ter is-family-primary is-size-5-desktop mb-3"
+            >
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </h5>
             <p class="mb-3">
@@ -130,9 +134,12 @@
             </p>
             <div class="flex items-center">
               <span class="mr-2">
-                <p class="has-text-weight-semibold is-family-sans-serif">
+                <router-link
+                  to="/about"
+                  class="has-text-weight-semibold is-family-sans-serif"
+                >
                   Read More
-                </p>
+                </router-link>
               </span>
               <span>
                 <a
@@ -158,7 +165,7 @@
       <div class="container">
         <div class="popular-places mx-2">
           <div class="mb-3">
-            <h2 class="is-family-sans-serif has-text-weight-semibold is-size-2">
+            <h2 class="is-family-sans-serif has-text-weight-semibold is-size-4">
               Popular places
             </h2>
           </div>
@@ -214,7 +221,7 @@
             <h2
               class="has-text-weight-semibold is-family-sans-serif has-text-white is-size-3 mb-4"
             >
-              Contact Us
+              Newsletter
             </h2>
             <p class="mb-2 is-family-primary">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam
@@ -225,7 +232,7 @@
             <b-field class="mt-3">
               <b-input
                 placeholder="Enter your email address."
-                type="text"
+                type="email"
                 icon="phone"
               >
               </b-input>
@@ -309,14 +316,15 @@ export default {
 
 <style lang="scss">
 .landing-header {
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 8rem);
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url("../assets/safari.jpg");
+  background-size: cover;
 
   @media screen and (min-width: 520px) {
-    // background-size: cover;
+    background-size: cover;
   }
 
   @media screen and (max-width: 520px) {
@@ -364,7 +372,7 @@ export default {
 
     @media screen and (min-width: 520px) {
       text-align: left;
-      font-size: 2.8rem;
+      font-size: 2.2rem;
     }
 
     @media screen and (min-width: 720px) {
