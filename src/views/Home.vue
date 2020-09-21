@@ -27,6 +27,27 @@
         </div>
       </div>
     </div>
+    <section class="landing-header-mobile">
+      <div class="nav-m-wrapper">
+        <NavClient />
+      </div>
+      <img src="../assets/van.jpg" alt="NK travels van" />
+      <div class="content flex centered column has-text-centered">
+        <div class="mt-5">
+          <h2 class="is-size-5 has-text-white is-family-sans-serif">
+            Make your next trip worth another
+          </h2>
+          <br />
+          <p class="has-text-white is-family-primary">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum
+            fugiat nemo reprehenderit quasi minus porro!
+          </p>
+          <router-link class="button is-primary mt-4" to="/find-trip"
+            >Book a trip</router-link
+          >
+        </div>
+      </div>
+    </section>
     <section>
       <div class="container"></div>
     </section>
@@ -315,6 +336,38 @@ export default {
 </script>
 
 <style lang="scss">
+.landing-header-mobile {
+  position: relative;
+
+  @media screen and (min-width: 520px) {
+    display: none;
+  }
+
+  .nav-m-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    mix-blend-mode: overlay;
+    height: 50vh;
+    object-fit: cover;
+    object-position: left;
+  }
+
+  .content {
+    background: #000000a1;
+    height: 50vh;
+    align-items: center;
+    padding: 3em 1em;
+  }
+}
+
 .landing-header {
   height: calc(100vh - 8rem);
   width: 100%;
@@ -329,6 +382,7 @@ export default {
 
   @media screen and (max-width: 520px) {
     height: calc(100vh - 4rem);
+    display: none;
   }
 
   .nav {

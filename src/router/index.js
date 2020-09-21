@@ -54,6 +54,23 @@ const routes = [
     path: "*",
     name: "404",
     component: () => import("../views/404.vue")
+  },
+  {
+    path: "/admin/:user",
+    name: "Admin",
+    component: () => import("../views/admin/layout/admin_layout.vue"),
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("../views/admin/home.vue")
+      },
+      {
+        path: "settings",
+        name: "Settings",
+        component: () => import("../views/admin/settings")
+      }
+    ]
   }
 ];
 
