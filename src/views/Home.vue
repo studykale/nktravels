@@ -32,7 +32,7 @@
         <NavClient />
       </div>
       <img src="../assets/van.jpg" alt="NK travels van" />
-      <div class="content flex centered column has-text-centered">
+      <div class="content flex centered f-column has-text-centered">
         <div class="mt-5">
           <h2 class="is-size-5 has-text-white is-family-sans-serif">
             Make your next trip worth another

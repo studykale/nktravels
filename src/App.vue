@@ -32,6 +32,10 @@
     flex-direction: column;
   }
 
+  &.f-column {
+    flex-direction: column;
+  }
+
   &.centered {
     justify-content: center;
   }
@@ -39,6 +43,18 @@
   &.j-between {
     justify-content: space-between;
   }
+
+  &.j-right {
+    justify-content: flex-end;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+}
+
+.has-shadow {
+  box-shadow: 0 10 15px rgba(0, 0, 0, 0.25);
 }
 
 .card.max-300 {
@@ -71,6 +87,7 @@ $input-focus-border-color: none;
 $radius: 5px;
 $card-radius: 10;
 $tabs-border-bottom-width: 5px;
+$size-normal: 0.85rem;
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
   "white": (

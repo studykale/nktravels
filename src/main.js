@@ -5,9 +5,11 @@ import store from "./store";
 import { firestorePlugin } from "vuefire";
 import VueMoment from "vue-moment";
 import VueMasonry from "vue-masonry-css";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
 Vue.use(VueMoment);
 Vue.use(VueMasonry);
+Vue.use(CKEditor);
 
 Vue.config.productionTip = false;
 Vue.use(firestorePlugin);
@@ -17,6 +19,5 @@ import "./plugins/buefy";
 new Vue({
   router,
   store,
-  render: h => h(App),
-  mounted: () => document.dispatchEvent(new Event("x-app-rendered"))
+  render: h => h(App)
 }).$mount("#app");

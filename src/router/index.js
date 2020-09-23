@@ -56,19 +56,58 @@ const routes = [
     component: () => import("../views/404.vue")
   },
   {
-    path: "/admin/:user",
+    path: "/admin",
     name: "Admin",
-    component: () => import("../views/admin/layout/admin_layout.vue"),
+    component: () => import("@/views/admin/layout/admin_layout.vue"),
     children: [
       {
         path: "dashboard",
         name: "Dashboard",
-        component: () => import("../views/admin/home.vue")
+        component: () => import("@/views/admin/home.vue")
       },
       {
         path: "settings",
         name: "Settings",
-        component: () => import("../views/admin/settings")
+        component: () => import("@/views/admin/settings")
+      },
+      {
+        path: "profile",
+        name: "Profile",
+        component: () => import("@/views/admin/profile.vue")
+      },
+      {
+        path: "create-company",
+        name: "CreateCompany",
+        component: () => import("@/views/admin/create_company.vue")
+      },
+      {
+        path: "manage-destinations",
+        name: "ManageDestinations",
+        component: () => import("@/views/admin/manage_destinations.vue")
+      },
+      {
+        path: "add-trip",
+        name: "AddTrip",
+        component: () => import("@/views/admin/add_trip.vue")
+      },
+      {
+        path: "search",
+        name: "Search",
+        component: () => import("@/views/admin/search.vue")
+      },
+      {
+        path: "archives",
+        name: "Archive",
+        component: () => import("@/views/admin/archives.vue")
+      },
+      {
+        path: "manage-companies",
+        name: "ManageCompanies",
+        component: () => import("@/views/admin/manage_companies.vue")
+      },
+      {
+        path: "*",
+        redirect: "/admin/dashboard"
       }
     ]
   }

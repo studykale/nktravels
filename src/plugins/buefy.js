@@ -19,11 +19,13 @@ import {
   faCaretUp,
   faUpload,
   faCalendar,
-  faAddressBook
+  faAddressBook,
+  faTag
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
+  faTag,
   faCheck,
   faCheckCircle,
   faInfoCircle,

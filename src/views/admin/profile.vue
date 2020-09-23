@@ -1,10 +1,10 @@
 <template>
   <div class="pt-2">
-    <div class="container mx-4">
+    <div class="container mx-2">
       <h2
-        class="is-family-primary is-size-5 has-text-black-bis has-text-weight-semibold"
+        class="has-text-weight-semibold has-text-black-bis is-size-5 is-family-primary"
       >
-        Settings
+        Profile
       </h2>
       <hr />
     </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "Settings"
+  name: "Profile"
 };
 </script>
 
