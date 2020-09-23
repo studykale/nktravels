@@ -19,9 +19,13 @@
           Trips
         </h2>
         <hr />
-        <div class="mb-8 columns">
-          <div class="column is-one-fifth-desktop is-one-third-tablet is-full-mobile" v-for="(t, i) in trips" :key="i">
-            <TripCard :name="t.name" :company="t.company"/>
+        <div class="mb-8 columns is-3-desktop is-2-tablet is-multiline">
+          <div
+            class="column mr-3 is-one-fifth-desktop is-one-third-tablet is-full-mobile"
+            v-for="(t, i) in trips"
+            :key="i"
+          >
+            <TripCard :name="t.name" :company="t.company" />
           </div>
         </div>
       </div>
@@ -55,6 +59,10 @@ export default {
         {
           name: "Limo",
           company: "Zumi travels"
+        },
+        {
+          name: "peru",
+          company: "Hillton"
         }
       ]
     };

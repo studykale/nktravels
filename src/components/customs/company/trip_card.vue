@@ -28,9 +28,21 @@ export default {
 .t-card {
   min-width: 180px;
   margin-bottom: 10px;
+padding: 4px;
+  transition: all ease-in 200ms;
+
+  &:hover {
+    box-shadow: 0 10px 15px #f0f6f4;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-right: auto;
+  }
 
   img {
-      border-radius: 10px;
+    border-radius: 10px;
   }
 
   .t-content {
