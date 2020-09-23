@@ -88,6 +88,8 @@ $radius: 5px;
 $card-radius: 10;
 $tabs-border-bottom-width: 5px;
 $size-normal: 0.85rem;
+$sidebar-width: 350px;
+$sidebar-background: #ffffff;
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
   "white": (

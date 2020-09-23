@@ -21,28 +21,46 @@
         <hr />
         <div class="mb-8 columns is-3-desktop is-2-tablet is-multiline">
           <div
-            class="column mr-3 is-one-fifth-desktop is-one-third-tablet is-full-mobile"
+            class="column is-one-fifth-desktop is-one-third-tablet is-full-mobile"
             v-for="(t, i) in trips"
             :key="i"
+            @click="open = !open"
           >
             <TripCard :name="t.name" :company="t.company" />
           </div>
         </div>
       </div>
     </div>
+    <b-sidebar
+      type="is-light"
+      fullheight
+      right
+      v-model="open"
+      mobile="fullwidth"
+    >
+      <div class="px-3 py-5">
+        <div class="flex j-right mb-3">
+          <minimize-2-icon @click="open = !open" size="1.5x"></minimize-2-icon>
+        </div>
+        <h2>Sidebar</h2>
+      </div>
+    </b-sidebar>
   </div>
 </template>
 
 <script>
 import TripCard from "@/components/customs/company/trip_card.vue";
+import { Minimize2Icon } from "vue-feather-icons";
 
 export default {
   name: "Home",
   components: {
-    TripCard
+    TripCard,
+    Minimize2Icon
   },
   data() {
     return {
+      open: false,
       trips: [
         {
           name: "Kili",

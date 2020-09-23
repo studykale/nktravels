@@ -7,6 +7,16 @@
         Profile
       </h2>
       <hr />
+      <div class="p-card flex">
+        <img src="../../assets/elephant.jpg" alt="" />
+        <div class="p-content">
+            <div>
+                <h2 class="has-text-weight-semibold is-size-5">John Doe</h2>
+                <p class="is-size-6 has-text-grey">Administrator</p>
+            </div>
+            <b-button>Edit</b-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -17,4 +27,33 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.p-card {
+  width: 400px;
+
+  @media screen and (max-width: 520px) {
+    flex-direction: column;
+    width: 300px;
+
+    img {
+      margin-bottom: 1em;
+      margin-right: 0 !important;
+      border-radius: 10px;
+    }
+  }
+  img {
+    margin-right: 1em;
+  }
+
+  .p-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 15px;
+
+      button {
+          color: grey;
+      }
+  }
+}
+</style>

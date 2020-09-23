@@ -26,9 +26,9 @@ export default {
 
 <style lang="scss" scoped>
 .t-card {
-  min-width: 180px;
+  min-width: 170px;
   margin-bottom: 10px;
-padding: 4px;
+  padding: 4px;
   transition: all ease-in 200ms;
 
   &:hover {

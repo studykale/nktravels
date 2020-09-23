@@ -119,38 +119,38 @@
             <b-menu>
               <b-menu-list label="Menu">
                 <b-menu-item
-                  @click="goto('add-trip')"
+                  @click="goto('/admin/add-trip')"
                   icon="information-outline"
                   label="Add new Trip"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('create-company')"
+                  @click="goto('/admin/create-company')"
                   icon="information-outline"
                   label="Create company"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('trips')"
+                  @click="goto('/admin/trips')"
                   icon="information-outline"
                   label="Trips"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('archives')"
+                  @click="goto('/admin/archives')"
                   icon="information-outline"
                   label="Archives"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('manage-destinations')"
+                  @click="goto('/admin/manage-destinations')"
                   icon="information-outline"
                   label="Manage Users"
                 ></b-menu-item>
               </b-menu-list>
               <b-menu-list label="Actions">
                 <b-menu-item
-                  @click="goto('profile')"
+                  @click="goto('/admin/profile')"
                   label="Profile"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('settings')"
+                  @click="goto('/admin/settings')"
                   label="Settings"
                 ></b-menu-item>
                 <b-menu-item @click="logout" label="Logout"></b-menu-item>

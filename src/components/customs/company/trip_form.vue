@@ -75,7 +75,7 @@
           <div v-for="(p, i) in packages" :key="i">
             <div class="mb-3">
               <p
-                class="has-text-weight-semibold is-size-6 py-1 px-1 rounded mb-2 has-background-grey has-text-white"
+                class="has-text-weight-semibold is-size-6 pt-2 pb-2 px-3 rounded mb-2 has-background-grey has-text-white"
               >
                 {{ i + 1 }}
               </p>
@@ -102,7 +102,13 @@
                 ></b-input>
               </b-field>
               <b-field label="Number of people">
-                <b-slider size="is-small" v-model="p.numberOfPeople">
+                <b-slider
+                  size="is-small"
+                  :min="1"
+                  :max="10"
+                  ticks
+                  v-model="p.numberOfPeople"
+                >
                 </b-slider>
               </b-field>
               <button @click="deletePackage(i)" class="button is-danger">
