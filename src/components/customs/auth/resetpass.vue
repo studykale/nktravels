@@ -42,7 +42,6 @@
 
 <script>
 import { auth } from "../../../db";
-
 export default {
   name: "ResetPass",
   data() {

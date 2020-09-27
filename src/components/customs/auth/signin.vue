@@ -106,11 +106,7 @@ export default {
         this.submitStatus = "PENDING";
         setTimeout(() => {
           this.submitStatus = "OKAY";
-          if (!this.admin) {
-            this.login(data);
-          } else {
-            this.loginAdmin(data);
-          }
+          this.login(data);
           this.email = this.password = this.confirmation = "";
           this.$v.$reset();
         }, 2000);

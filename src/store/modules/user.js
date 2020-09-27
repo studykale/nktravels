@@ -230,7 +230,7 @@ const User = {
               );
             });
           commit(SIGNUP_USER_COMPLETE);
-          router.push("/admin/auth/signin");
+          router.push("/admin/dashboard");
         })
         .catch(error => {
           //("error", error)
