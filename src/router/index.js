@@ -8,52 +8,82 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("../views/About.vue")
+    component: () => import("../views/About.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/contactus",
     name: "ContactUs",
-    component: () => import("../views/contactus.vue")
+    component: () => import("../views/contactus.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/gallery",
     name: "Gallery",
-    component: () => import("../views/gallery.vue")
+    component: () => import("../views/gallery.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/detail",
     name: "Detail",
-    component: () => import("../views/destination_detail.vue")
+    component: () => import("../views/destination_detail.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/find-trip",
     name: "FindTrip",
-    component: () => import("../views/find_trip.vue")
+    component: () => import("../views/find_trip.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/admin/auth/signin",
     name: "SignIn",
-    component: () => import("../views/signin.vue")
+    component: () => import("../views/signin.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/admin/auth/signup",
     name: "SignUp",
-    component: () => import("../views/signup.vue")
+    component: () => import("../views/signup.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/admin/auth/pass-change-req",
     name: "ResetPass",
-    component: () => import("../views/reset_pass.vue")
+    component: () => import("../views/reset_pass.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "*",
     name: "404",
-    component: () => import("../views/404.vue")
+    component: () => import("../views/404.vue"),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/admin",
@@ -109,13 +139,38 @@ const routes = [
         path: "*",
         redirect: "/admin/dashboard"
       }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    //https://router.vuejs.org/guide/advanced/scroll-behavior.html
+    if (to.hash) {
+      return { selector: to.hash };
+    } else if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  let isLoggedIn = window.$cookies.isKey("loggedIn");
+
+  //("loggedIn", isLoggedIn)
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  // //("currentUser", currentUser)
+  if (requiresAuth && !isLoggedIn) {
+    next("/admin/auth/signin");
+  } else if (!requiresAuth && isLoggedIn) next("/admin/dashboard");
+  else next();
 });
 
 export default router;

@@ -85,13 +85,22 @@
             </b-upload>
           </b-field>
           <div class="flex f-column" v-else>
-            <edit-3-icon @click="imageUrl = null" size="1.5x"></edit-3-icon>
-
-            <img class="preview" :src="imageUrl" alt="Preview" />
+            <div v-if="uploadingImage" class="my-2">
+              <b-progress v-if="uploadingImage" size="is-small"></b-progress>
+            </div>
+            <div v-else>
+              <edit-3-icon @click="deleteImage" size="1.5x"></edit-3-icon>
+              <img class="preview" :src="imageUrl" alt="Preview" />
+            </div>
           </div>
         </div>
       </div>
-      <button class="button is-warning is-light" type="submit">
+      <button
+        :disabled="uploadingImage"
+        class="button is-warning is-light"
+        type="submit"
+        :class="{ 'is-loading': isSubmitting }"
+      >
         Save
       </button>
     </form>
@@ -110,6 +119,13 @@ const {
   url
 } = require("vuelidate/lib/validators");
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {
+  storageRef,
+  TaskState,
+  TaskEvent,
+  Timestamp,
+  companyCollection
+} from "../../../db";
 
 export default {
   name: "CompanyForm",
@@ -167,7 +183,11 @@ export default {
       website: "",
       contactInfo: "",
       fileUploaded: false,
-      imageUrl: null
+      uploadingImage: null,
+      imageUrl: null,
+      uploadImage: null,
+      imageName: null,
+      isSubmitting: false
     };
   },
   methods: {
@@ -178,21 +198,130 @@ export default {
         location: this.location,
         contact: this.contactInfo,
         website: this.website,
-        email: this.email
+        email: this.email,
+        imageUrl: this.uploadImage,
+        archived: false,
+        created: Timestamp.now()
       };
 
-      console.log("company", data);
+      this.isSubmitting = true;
+
+      companyCollection
+        .add(data)
+        .then(result => {
+          this.isSubmitting = false;
+          console.log("company", result);
+          this.$router.push("/admin/manage-companies");
+        })
+        .catch(error => {
+          this.isSubmitting = false;
+          console.log("error", error);
+          this.$buefy.snackbar.open({
+            message: "Company creation failed.",
+            type: "is-danger"
+          });
+        });
     },
     displayPhoto(f) {
       if (f.size / (1024 * 1024) < 2) {
+        this.imageName = f.name;
         this.fileUploaded = true;
+        this.uploadingImage = true;
         this.imageUrl = URL.createObjectURL(f);
+        this.uploadFiles(f, "company")
+          .then(result => {
+            this.uploadingImage = false;
+            this.uploadImage = result;
+          })
+          .catch(error => {
+            console.log("error", error);
+            this.uploadingImage = false;
+            this.$buefy.snackbar.open(
+              "We were unable to upload the company photo. Please try again or contact customer support"
+            );
+          });
       } else {
         this.$buefy.toast.open({
           type: "is-warning",
           message: "You file exceeded 3mb"
         });
       }
+    },
+    deleteImage() {
+      let deleteRef = storageRef.child(`company/${this.imageName}`);
+      deleteRef
+        .delete()
+        .then(() => {
+          this.imageUrl = null;
+          this.uploadImage = null;
+        })
+        .catch(error => {
+          console.log("error", error);
+          this.$buefy.snackbar.open(
+            `Sorry we could not delete the company photo. Please try again.`
+          );
+        });
+    },
+    uploadFiles(file, dir) {
+      // let progress, status;
+      return new Promise((resolve, reject) => {
+        let uploadTask = storageRef
+          .child(`${dir}/${file.name}`)
+          .put(file, { contentType: file.type });
+
+        uploadTask.on(
+          TaskEvent.STATE_CHANGED,
+          snapshot => {
+            this.uploadProgess =
+              snapshot.bytesTransferred / snapshot.totalBytes;
+            // let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            // //('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case TaskState.PAUSED: // or 'paused'
+                // //('Upload is paused');
+                break;
+              case TaskState.RUNNING: // or 'running'
+                // //('Upload is running');
+                break;
+              case TaskState.SUCCESS:
+                // status = "complete";
+                break;
+            }
+          },
+          error => {
+            switch (error.code) {
+              case "storage/unauthorized":
+                // User doesn't have permission to access the object
+                // //("You dont have permmission")
+                error = "unauthorized";
+                reject(new Error("No permission"));
+                break;
+
+              case "storage/canceled":
+                // User canceled the upload
+                // //("error cancelled")
+                error = "cancelled";
+                reject(new Error("Process cancelled"));
+                break;
+
+              case "storage/unknown":
+                // Unknown error occurred, inspect error.serverResponse
+                error = "Error occurred";
+                reject(new Error("Error occured. Unknown"));
+                // //("error unknown")
+
+                break;
+            }
+          },
+          () => {
+            uploadTask.snapshot.ref.getDownloadURL().then(url => {
+              // //("url", url)
+              resolve(url);
+              // //("files", filesUrl)
+            });
+          }
+        );
+      });
     }
   },
   validations: {

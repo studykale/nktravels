@@ -3,6 +3,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 
+import store from "./store";
+
 let config = {
   projectId: process.env.VUE_APP_PROJECTID,
   apiKey: process.env.VUE_APP_APIKEY,
@@ -15,25 +17,28 @@ let config = {
 };
 
 const db = firebase.initializeApp(config).firestore();
+db.enablePersistence({ synchronizeTabs: true });
+
 const { Timestamp } = firebase.firestore;
 const auth = firebase.auth();
 // const currentUser = auth.currentUser;
-
+const companyCollection = db.collection("companies");
 const newUser = uid => db.collection("users").doc(`${uid}`);
 
 // For storing project extra files.
 const storageRef = firebase.storage().ref();
 const { TaskEvent, TaskState } = firebase.storage;
 let currentUser;
-db.enablePersistence({ synchronizeTabs: true });
 
 auth.onAuthStateChanged(user => {
   if (user) {
     currentUser = user;
   }
+  store.dispatch("user/fetchUser", user, { root: true });
 });
 
 export {
+  companyCollection,
   Timestamp,
   newUser,
   auth,

@@ -1,18 +1,20 @@
 <template>
   <div class="c-card">
-    <img class="mb-3" src="../../../assets/zebras.jpg" alt="Zebra photo" />
+    <img
+      v-if="company.imageUrl"
+      class="mb-3"
+      :src="company.imageUrl"
+      alt="Zebra photo"
+    />
+    <img v-else src="../../../assets/zebras.jpg" alt="Zebras" />
     <div class="c-content mb-2">
       <h3 class="is-family-sans-serif has-text-weight-semibold is-size-5 mb-2">
-        Mzima Springs
+        {{ company.name }}
       </h3>
-      <h5
-        class="is-family-sans-serif has-text-weight-light is-size-6 mb-1 has-text-primary"
-      >
-        5 packages
-      </h5>
-      <p class="has-text-grey-dark is-size-7">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, velit!
-      </p>
+      <span
+        v-html="company.description"
+        class="has-text-grey-dark is-size-7 ellipses"
+      ></span>
     </div>
     <div class="c-foot flex j-right">
       <b-dropdown position="is-top-right" aria-role="list">
@@ -22,17 +24,17 @@
           class="has-text-black"
         ></more-horizontal-icon>
 
-        <b-dropdown-item aria-role="listitem">
+        <b-dropdown-item @click="unarchive" aria-role="listitem">
           <airplay-icon size="1x" class="mr-2 items-center"></airplay-icon>
           <span>
             Unarchive
           </span>
         </b-dropdown-item>
-        <b-dropdown-item aria-role="listitem">
+        <b-dropdown-item @click="edit" aria-role="listitem">
           <edit-2-icon size="1x" class="mr-2"></edit-2-icon>
           <span>Edit</span>
         </b-dropdown-item>
-        <b-dropdown-item aria-role="listitem">
+        <b-dropdown-item @click="remove" aria-role="listitem">
           <trash-2-icon size="1x" class="mr-2"></trash-2-icon>
           <span>Delete</span>
         </b-dropdown-item>
@@ -48,19 +50,51 @@ import {
   Edit2Icon,
   Trash2Icon
 } from "vue-feather-icons";
+import { companyCollection } from "../../../db";
 
 export default {
   name: "CompanyCard",
+  props: {
+    company: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     MoreHorizontalIcon,
     AirplayIcon,
     Edit2Icon,
     Trash2Icon
+  },
+  methods: {
+    unarchive() {
+      companyCollection
+        .doc(this.company.id)
+        .set({ archived: false }, { merge: true });
+    },
+    remove() {
+      this.$buefy.dialog.confirm({
+        title: "Delete company",
+        message:
+          "Are you sure you want to delete the company?. Any destination associated with the company will be lost. This operation can not be undone.",
+        confirmText: "Delete",
+        onConfirm: () => companyCollection.doc(this.company.id).delete()
+      });
+    },
+    edit() {
+      console.log("editing");
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.ellipses {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .c-card {
   max-width: 300px;
   height: auto;

@@ -16,51 +16,50 @@
           </div>
         </div>
         <h2 class="is-size-5 has-text-black-bis has-text-weight-semibold">
-          Trips
+          Trips ({{ destinations.length }})
         </h2>
         <hr />
-        <div class="mb-8 columns is-3-desktop is-2-tablet is-multiline">
-          <div
-            class="column is-one-fifth-desktop is-one-third-tablet is-full-mobile"
-            v-for="(t, i) in trips"
-            :key="i"
-            @click="open = !open"
-          >
-            <TripCard :name="t.name" :company="t.company" />
+        <div v-if="destinations">
+          <div class="mb-8 columns is-3-desktop is-2-tablet is-multiline">
+            <div
+              class="column is-one-fifth-desktop is-one-third-tablet is-full-mobile"
+              v-for="(t, i) in destinations"
+              :key="i"
+              @click="showDetails(t)"
+            >
+              <TripCard :name="t.name" :company="t.company" :image="t.image" />
+            </div>
           </div>
+          <TripDetails />
+        </div>
+        <div class="flex items-center f-column j-center" v-else>
+          <inbox-icon size="4x" class="has-text-warning"></inbox-icon>
+          <p class="is-size-4 has-text-weight-light">Empty</p>
+          <p>There aren't any destinations yet.</p>
         </div>
       </div>
     </div>
-    <b-sidebar
-      type="is-light"
-      fullheight
-      right
-      v-model="open"
-      mobile="fullwidth"
-    >
-      <div class="px-3 py-5">
-        <div class="flex j-right mb-3">
-          <minimize-2-icon @click="open = !open" size="1.5x"></minimize-2-icon>
-        </div>
-        <h2>Sidebar</h2>
-      </div>
-    </b-sidebar>
   </div>
 </template>
 
 <script>
 import TripCard from "@/components/customs/company/trip_card.vue";
-import { Minimize2Icon } from "vue-feather-icons";
+import { companyCollection } from "../../db";
+import TripDetails from "@/components/customs/company/trip_details.vue";
+import { InboxIcon } from "vue-feather-icons";
 
 export default {
   name: "Home",
   components: {
     TripCard,
-    Minimize2Icon
+    InboxIcon,
+    TripDetails
   },
   data() {
     return {
       open: false,
+      companies: [],
+      destinations: [],
       trips: [
         {
           name: "Kili",
@@ -84,6 +83,45 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    setDestinations(c) {
+      console.log("c", c);
+      c.forEach(company => {
+        companyCollection
+          .doc(`${company.id}`)
+          .collection("destinations")
+          .get()
+          .then(querySnapshots => {
+            querySnapshots.forEach(doc => {
+              let destination = doc.data();
+              this.destinations.push({
+                id: doc.id,
+                company: company.name,
+                companyId: company.id,
+                name: destination.name,
+                image: destination.images[0]
+              });
+            });
+          })
+          .catch(error => {
+            console.log("error", error);
+          });
+      });
+    },
+    showDetails(t) {
+      console.log("show", t);
+      this.$root.$emit("openTripDetails", {
+        show: true,
+        company: t.companyId,
+        id: t.id
+      });
+    }
+  },
+  created() {
+    this.$bind("companies", companyCollection).then(results => {
+      this.setDestinations(results);
+    });
   }
 };
 </script>

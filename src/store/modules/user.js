@@ -8,8 +8,89 @@ import {
   SIGNUP_USER_FAILURE
 } from "../mutation-types";
 import { NotificationProgrammatic as Notification } from "buefy";
-import { auth, newUser } from "firebase";
+import {
+  auth,
+  newUser,
+  storageRef,
+  TaskEvent,
+  TaskState,
+  currentUser
+} from "../../db";
 import router from "../../router";
+
+const uploadFiles = (file, dir) => {
+  // let progress, status;
+  return new Promise((resolve, reject) => {
+    let uploadTask = storageRef
+      .child(`${dir}/${file.name}`)
+      .put(file, { contentType: file.type });
+
+    uploadTask.on(
+      TaskEvent.STATE_CHANGED,
+      snapshot => {
+        // let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // //('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case TaskState.PAUSED: // or 'paused'
+            // //('Upload is paused');
+            Notification.open({
+              message: "Sorry the upload process paused..",
+              type: "is-warning"
+            });
+
+            break;
+          case TaskState.RUNNING: // or 'running'
+            // //('Upload is running');
+            Notification.open({
+              message: "Uploading...",
+              type: "is-info"
+            });
+
+            break;
+          case TaskState.SUCCESS:
+            // status = "complete";
+            Notification.open({
+              message: "Successfully uploaded just finishing up",
+              type: "is-success"
+            });
+            break;
+        }
+      },
+      error => {
+        switch (error.code) {
+          case "storage/unauthorized":
+            // User doesn't have permission to access the object
+            // //("You dont have permmission")
+            error = "unauthorized";
+            reject(new Error("No permission"));
+            break;
+
+          case "storage/canceled":
+            // User canceled the upload
+            // //("error cancelled")
+            error = "cancelled";
+            reject(new Error("Process cancelled"));
+            break;
+
+          case "storage/unknown":
+            // Unknown error occurred, inspect error.serverResponse
+            error = "Error occurred";
+            reject(new Error("Error occured. Unknown"));
+            // //("error unknown")
+
+            break;
+        }
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then(url => {
+          // //("url", url)
+          resolve(url);
+          // //("files", filesUrl)
+        });
+      }
+    );
+  });
+};
 
 const User = {
   namespaced: true,
@@ -48,6 +129,10 @@ const User = {
     [SIGNUP_USER_FAILURE](state) {
       state.status = {};
       state.user = {};
+    },
+    setUser(state, user) {
+      state.user = user;
+      state.status = { loggedIn: true };
     }
   },
   actions: {
@@ -91,7 +176,7 @@ const User = {
             photoUrl: user.photoURL,
             userId: user.uid
           });
-          router.replace("/dashboard/projects");
+          router.replace("");
         })
         .catch(error => {
           //("error sign in", error)
@@ -207,6 +292,78 @@ const User = {
         });
       } else {
         commit("setUser", null);
+      }
+    },
+    updateUserProfile({ dispatch, commit }, data) {
+      console.log("data");
+      commit("updateProfileRequest");
+      if (data.type == "photo") {
+        uploadFiles(data.image, "photo")
+          .then(file => {
+            currentUser
+              .updateProfile({
+                photoURL: file
+              })
+              .then(() => {
+                commit("updateProfile", currentUser.photoURL);
+              })
+              .catch(error => {
+                Notification.open({
+                  message:
+                    "Sorry we could not update the profile. " + error.message
+                });
+                commit("updateProfileFail");
+              });
+          })
+          .catch(error => {
+            Notification.open({
+              message: "Profile was not updated :" + error.message
+            });
+            commit("updateProfileFail");
+          });
+      } else if (data.type == "email") {
+        commit("updateEmailRequest");
+
+        currentUser
+          .updateEmail(data.email)
+          .then(() => {
+            Notification.open({
+              type: "is-info",
+              message: "Email updated..."
+            });
+            commit("updateEmail", currentUser.email);
+          })
+          .catch(error => {
+            commit("updateEmailFail");
+            if (error.type == "invalid-email") {
+              Notification.open({
+                message: "Sorry but that is an invalid email.",
+                type: "is-warning"
+              });
+            } else if (error.type == "requires-recent-login") {
+              Notification.open({
+                message: "You need to have logged In",
+                type: "is-danger"
+              });
+            } else if (error.type == "email-already-in-use") {
+              Notification.open({
+                message: "Sorry that email is already in use",
+                type: "is-warning"
+              });
+            }
+          });
+      } else if (data.type == "password") {
+        commit("updatePasswordRequest");
+
+        currentUser
+          .updatePassword(data.password)
+          .then(result => {
+            console.log("res", result);
+            dispatch("signout");
+          })
+          .catch(error => {
+            console.log("err", error);
+          });
       }
     }
   }

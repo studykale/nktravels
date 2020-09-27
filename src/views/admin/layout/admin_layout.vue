@@ -176,6 +176,7 @@ import {
   PlusIcon,
   SearchIcon
 } from "vue-feather-icons";
+import { mapActions } from "vuex";
 
 export default {
   name: "Layout",
@@ -196,6 +197,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("user", ["signout"]),
     goto(link) {
       if (link) {
         this.$router.push(link);
@@ -204,6 +206,7 @@ export default {
     },
     logout() {
       console.log("logged out");
+      this.signout();
     }
   }
 };

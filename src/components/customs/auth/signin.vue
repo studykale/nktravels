@@ -42,6 +42,7 @@
           <button
             :disabled="submitStatus === 'PENDING'"
             class="button is-primary loginBtn"
+            :class="{ 'is-loading': loginStatus.loggingIn == true }"
             type="submit"
           >
             Login
@@ -61,6 +62,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import { validationMixin } from "vuelidate";
 const { required, minLength, email } = require("vuelidate/lib/validators");
 import Logo from "../../utilities/logo";
@@ -90,9 +92,35 @@ export default {
     }
   },
   methods: {
-    loginUser() {}
+    ...mapActions("user", ["login"]),
+    loginUser() {
+      let data = {
+        email: this.email,
+        password: this.password
+      };
+
+      this.$v.$touch();
+      if (this.$v.$invalid && !this.$v.$touch()) {
+        this.submitStatus = "ERROR";
+      } else {
+        this.submitStatus = "PENDING";
+        setTimeout(() => {
+          this.submitStatus = "OKAY";
+          if (!this.admin) {
+            this.login(data);
+          } else {
+            this.loginAdmin(data);
+          }
+          this.email = this.password = this.confirmation = "";
+          this.$v.$reset();
+        }, 2000);
+      }
+    }
   },
   computed: {
+    ...mapState({
+      loginStatus: state => state.user.status
+    }),
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) {

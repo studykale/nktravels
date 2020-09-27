@@ -7,14 +7,16 @@
         Profile
       </h2>
       <hr />
-      <div class="p-card flex">
+      <div class="p-card flex f-column">
         <img src="../../assets/elephant.jpg" alt="" />
-        <div class="p-content">
-            <div>
-                <h2 class="has-text-weight-semibold is-size-5">John Doe</h2>
-                <p class="is-size-6 has-text-grey">Administrator</p>
-            </div>
-            <b-button>Edit</b-button>
+        <div class="p-content mt-3">
+          <div>
+            <h2 class="has-text-weight-semibold is-size-5">John Doe</h2>
+            <p class="is-size-6 has-text-grey">Administrator</p>
+          </div>
+          <b-tooltip label="Edit your profile" position="is-top">
+            <b-button class="mt-3">Edit</b-button>
+          </b-tooltip>
         </div>
       </div>
     </div>
@@ -46,14 +48,14 @@ export default {
   }
 
   .p-content {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 15px;
 
-      button {
-          color: grey;
-      }
+    button {
+      color: grey;
+    }
   }
 }
 </style>

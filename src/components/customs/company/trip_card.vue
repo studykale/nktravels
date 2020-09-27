@@ -1,6 +1,7 @@
 <template>
   <div class="t-card">
-    <img class="rounded" src="../../../assets/beach.jpg" alt="Beach picture" />
+    <img v-if="image" class="rounded" :src="image" alt="Beach picture" />
+    <img src="../../../assets/beach.jpg" alt="NK travels trip" v-else />
     <div class="t-content">
       <h2 class="has-text-weight-bold has-text-black-bis">{{ name }}</h2>
       <p class="is-size-7 has-text-grey">{{ company }}</p>
@@ -19,6 +20,9 @@ export default {
     company: {
       type: String,
       default: "Mzizi Travels"
+    },
+    image: {
+      type: String
     }
   }
 };
