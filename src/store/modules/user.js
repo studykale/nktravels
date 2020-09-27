@@ -167,6 +167,7 @@ const User = {
       auth
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(result => {
+          console.log("loggedin");
           let user = result.user;
           window.$cookies.set("loggedIn", true, "1d");
           commit(LOGIN_USER, {
@@ -176,7 +177,7 @@ const User = {
             photoUrl: user.photoURL,
             userId: user.uid
           });
-          router.replace("");
+          router.replace("admin/dashboard");
         })
         .catch(error => {
           //("error sign in", error)

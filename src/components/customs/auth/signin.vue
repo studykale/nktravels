@@ -104,12 +104,11 @@ export default {
         this.submitStatus = "ERROR";
       } else {
         this.submitStatus = "PENDING";
-        setTimeout(() => {
+      
           this.submitStatus = "OKAY";
           this.login(data);
           this.email = this.password = this.confirmation = "";
           this.$v.$reset();
-        }, 2000);
       }
     }
   },
