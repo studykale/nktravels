@@ -104,11 +104,11 @@ export default {
         this.submitStatus = "ERROR";
       } else {
         this.submitStatus = "PENDING";
-      
-          this.submitStatus = "OKAY";
-          this.login(data);
-          this.email = this.password = this.confirmation = "";
-          this.$v.$reset();
+
+        this.submitStatus = "OKAY";
+        this.login(data);
+        this.email = this.password = this.confirmation = "";
+        this.$v.$reset();
       }
     }
   },
