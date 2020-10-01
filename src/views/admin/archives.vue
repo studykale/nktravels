@@ -8,6 +8,7 @@
       <div v-if="archives.length > 0" class="flex row wrap">
         <CompanyCard
           :company="company"
+          :id="company.id"
           v-for="company in archives"
           :key="company.id"
         />
@@ -34,20 +35,11 @@ export default {
   },
   data() {
     return {
-      companies: [],
       archives: []
     };
   },
-  firestore: {
-    companies: companyCollection
-  },
-  methods: {
-    archivedCompanies() {
-      return this.companies.find(e => e.archived == true);
-    }
-  },
   created() {
-    this.archives = this.archivedCompanies;
+    this.$bind("archives", companyCollection.where("archive", "==", true));
   }
 };
 </script>

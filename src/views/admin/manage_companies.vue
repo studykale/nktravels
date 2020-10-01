@@ -101,7 +101,7 @@
             sortable
             v-slot="props"
           >
-            {{ props.row.archived }}
+            {{ props.row.archive || "false" }}
           </b-table-column>
 
           <b-table-column
@@ -174,13 +174,16 @@ export default {
         message: "Are you sure youb want to delete? This can not be undone!",
         cancelText: "Disagree",
         confirmText: "Agree",
-        onConfirm: () => companyCollection.doc(this.selected.id).delete()
+        onConfirm: () => this.deleteCompany
       });
     },
     clearSelected() {
       if (this.selected) {
         this.selected = null;
       }
+    },
+    deleteCompany() {
+      alert("deleted");
     }
   }
 };

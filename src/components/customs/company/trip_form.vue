@@ -35,6 +35,15 @@
               >
             </b-select>
           </b-field>
+          <b-field label="Destination location">
+            <b-input
+              type="text"
+              placeholder="Enter destination location."
+              required
+              v-model.trim="location"
+            >
+            </b-input>
+          </b-field>
           <b-field class="mt-3" label="Add trip tag">
             <b-taginput
               v-model="tags"
@@ -44,6 +53,18 @@
               :open-on-focus="false"
               icon="tag"
               placeholder="Add a tag"
+            >
+            </b-taginput>
+          </b-field>
+          <b-field class="mt-3" label="Add destination amenities">
+            <b-taginput
+              v-model="popularAmenities"
+              autocomplete
+              allow-new
+              :allow-duplicates="false"
+              :open-on-focus="false"
+              icon="tag"
+              placeholder="Add an amenity"
             >
             </b-taginput>
           </b-field>
@@ -81,7 +102,7 @@
             <div class="my-2">
               <b-progress v-if="uploadingImages" size="is-small"></b-progress>
             </div>
-            <div v-if="!uploadingImages" class="tags">
+            <div v-if="!uploadingImages && !editing" class="tags">
               <span
                 v-for="(file, index) in dropFiles"
                 :key="index"
@@ -94,6 +115,18 @@
                   @click="deleteDropFile(index)"
                 ></button>
               </span>
+            </div>
+            <div
+              class="flex row wrap editImages"
+              v-if="!uploadingImages && editing"
+            >
+              <img
+                class="is-rounded"
+                v-for="(i, k) in images"
+                :key="k"
+                :src="image"
+                alt="Destination image"
+              />
             </div>
           </section>
         </div>
@@ -134,6 +167,14 @@
                   max="500000"
                   placeholder="Enter package cost"
                   v-model="p.cost"
+                ></b-numberinput>
+              </b-field>
+              <b-field label="Number of days">
+                <b-numberinput
+                  min="1"
+                  max="15"
+                  placeholder="Enter number of days for this package."
+                  v-model="p.noOfDays"
                 ></b-numberinput>
               </b-field>
               <b-field label="Number of people">
@@ -199,6 +240,7 @@ import {
 export default {
   name: "TripForm",
   mixins: [validationMixin],
+  props: ["destination"],
   components: {
     UploadCloudIcon,
     TrashIcon
@@ -248,23 +290,30 @@ export default {
       },
       tags: [],
       images: [],
+      popularAmenities: [],
       category: "",
       company: "",
       companies: [],
       isSubmitting: false,
+      checkIn: null,
+      checkOut: null,
+      isAmPm: false,
+      location: "Nairobi",
       packages: [
         {
           code: "",
           name: "",
           detail: "",
           cost: "",
+          noOfDays: 1,
           numberOfPeople: 1
         }
       ],
       uploadingImages: null,
       uploadedImages: [],
       uploadProgess: 0,
-      availableCompanies: []
+      availableCompanies: [],
+      editing: false
     };
   },
   validations: {
@@ -283,8 +332,11 @@ export default {
       Promise.all(f.map(e => this.uploadFiles(e, "trips")))
         .then(result => {
           this.uploadingImages = false;
-          this.uploadedImages = result;
-          console.log("results", result);
+          if (this.editing) {
+            this.uploadedImages.push(result);
+          } else {
+            this.uploadedImages = result;
+          }
         })
         .catch(() => {
           this.uploadingImages = false;
@@ -301,32 +353,55 @@ export default {
         packages: this.packages,
         category: this.category,
         tags: this.tags,
-        archived: false
+        amenities: this.popularAmenities,
+        location: this.location
       };
       this.isSubmitting = true;
 
-      companyCollection
-        .doc(this.company)
-        .collection("destinations")
-        .add(tripData)
-        .then(result => {
-          this.isSubmitting = false;
-          this.$buefy.snackbar.open({
-            message: "Added trip",
-            type: "is-success",
-            position: "is-top-right"
+      if (this.editing) {
+        companyCollection
+          .doc(this.destination.compantId)
+          .get()
+          .then(result => {
+            if (result.exists) {
+              companyCollection
+                .doc(result.id)
+                .collection("destinations")
+                .doc(this.destination.tripId)
+                .set(tripData, { merge: true });
+            }
+          })
+          .catch(error => {
+            console.log("error updating", error);
+            this.$buefy.snackbar.open({
+              position: "is-bottom-right",
+              type: "is-warning",
+              message: "Destination update failed. "
+            });
           });
-          console.log("company", result);
-        })
-        .catch(error => {
-          console.log("error", error);
-          this.$buefy.snackbar.open({
-            message: "Failed to add destination",
-            type: "is-danger",
-            position: "is-top-right"
+      } else {
+        companyCollection
+          .doc(this.company)
+          .collection("destinations")
+          .add(tripData)
+          .then(result => {
+            this.isSubmitting = false;
+            this.$buefy.snackbar.open({
+              message: "Added trip",
+              type: "is-success",
+              position: "is-top-right"
+            });
+            console.log("company", result);
+          })
+          .catch(error => {
+            console.log("error", error);
+            this.$buefy.snackbar.open({
+              message: "Failed to add destination",
+              type: "is-danger",
+              position: "is-top-right"
+            });
           });
-          this.isSubmitting = false;
-        });
+      }
     },
     deletePackage(p) {
       this.packages.splice(p, 1);
@@ -354,6 +429,19 @@ export default {
           this.$buefy.snackbar.open(`Failed to delete file`);
         });
       console.log("file", this.dropFiles[index].name);
+    },
+    initTrip(destination) {
+      this.editing = true;
+      // destination has companyId and tripId for updates
+      (this.name = destination.name),
+        (this.description = destination.description),
+        (this.uploadedImages = destination.images),
+        (this.packages = destination.packages),
+        (this.category = destination.category),
+        (this.tags = destination.tags);
+      this.popularAmenities = destination.amenities;
+      this.checkIn = destination.checkIn;
+      this.checkOut = destination.checkOut;
     },
     uploadFiles(file, dir) {
       // let progress, status;
@@ -421,6 +509,9 @@ export default {
     availableCompanies: companyCollection
   },
   computed: {
+    format() {
+      return this.isAmPm ? "12" : "24";
+    },
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) {
@@ -439,6 +530,11 @@ export default {
 
       return errors;
     }
+  },
+  created() {
+    if (this.destination) {
+      this.initTrip(this.destination);
+    }
   }
 };
 </script>
@@ -446,5 +542,13 @@ export default {
 <style lang="scss">
 .mb-7 {
   margin-bottom: 8em;
+}
+
+.editImages img {
+  img {
+    height: 100px;
+    width: 100px;
+    object-fit: center;
+  }
 }
 </style>

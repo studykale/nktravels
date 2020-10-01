@@ -32,7 +32,17 @@
             alt=""
           />
         </div>
-        <b-button class="mt-3" type="is-info">Edit</b-button>
+        <p class="my-3">{{ destination.views || "0" }} Views</p>
+        <p v-if="destination.bookings">
+          {{ destination.bookings.length }} Bookings
+        </p>
+        <hr />
+        <div class="flex row">
+          <b-button class="mt-3 mr-2" type="is-info">Edit</b-button>
+          <b-button @click="confirmDelete" class="mt-3" type="is-danger"
+            >Delete</b-button
+          >
+        </div>
       </div>
     </div>
   </b-sidebar>
@@ -40,7 +50,7 @@
 
 <script>
 import { Minimize2Icon } from "vue-feather-icons";
-import { companyCollection } from "../../../db";
+import { companyCollection, storageRef } from "../../../db";
 
 export default {
   components: {
@@ -50,8 +60,48 @@ export default {
     return {
       openSide: false,
       tripId: null,
-      destination: null
+      destination: null,
+      companyId: null
     };
+  },
+  methods: {
+    confirmDelete() {
+      this.$buefy.dialog.confirm({
+        message:
+          "Are you sure you want to delete the destination? This can not be undone.",
+        title: "Delete " + this.destination.name + "?",
+        confirmText: "Delete",
+        onConfirm: () => this.deleteDestination
+      });
+    },
+    deleteDestination() {
+      companyCollection
+        .doc(this.companyId)
+        .collection("destinations")
+        .doc(this.destination.id)
+        .get()
+        .then(result => {
+          if (result.exists) {
+            let dData = result.data();
+            if (dData.images) {
+              let images = dData.images;
+              images.forEach(e => {
+                storageRef.storage.refFromURL(e).delete();
+              });
+            }
+
+            companyCollection.doc(result.id).delete();
+          }
+        })
+        .catch(error => {
+          console.log("error", error);
+          this.$buefy.snackbar.open({
+            message: "Destination was not deleted.",
+            type: "is-warning",
+            position: "is-bottom-right"
+          });
+        });
+    }
   },
   created() {
     this.$nextTick(() => {

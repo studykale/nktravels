@@ -55,6 +55,23 @@
       >
         <div class="slinks-wrapper flex f-column">
           <div class="side-top flex f-column">
+            <div class="my-2 flex row">
+              <img
+                class="mr-2"
+                height="50"
+                width="50"
+                :src="loggedInUser.photoURL"
+                alt="User photo"
+              />
+              <div class="flex f-column">
+                <p
+                  class="has-text-white has-text-weight-semibold is-capitalized"
+                >
+                  {{ loggedInUser.username }}
+                </p>
+                <small class="has-text-light">Administrator</small>
+              </div>
+            </div>
             <router-link
               to="dashboard"
               class="side-link flex items-center active"
@@ -116,6 +133,7 @@
         ></menu-icon>
         <b-sidebar fullheight type="is-light" v-model="openSide">
           <div class="px-5 py-5">
+            <p>{{ loggedInUser.username }}</p>
             <b-menu>
               <b-menu-list label="Menu">
                 <b-menu-item
@@ -139,9 +157,9 @@
                   label="Archives"
                 ></b-menu-item>
                 <b-menu-item
-                  @click="goto('/admin/manage-destinations')"
+                  @click="goto('/admin/manage-companies')"
                   icon="information-outline"
-                  label="Manage Users"
+                  label="Manage Companies"
                 ></b-menu-item>
               </b-menu-list>
               <b-menu-list label="Actions">
@@ -176,7 +194,7 @@ import {
   PlusIcon,
   SearchIcon
 } from "vue-feather-icons";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Layout",
@@ -208,6 +226,11 @@ export default {
       console.log("logged out");
       this.signout();
     }
+  },
+  computed: {
+    ...mapState({
+      loggedInUser: state => state.user.user
+    })
   }
 };
 </script>

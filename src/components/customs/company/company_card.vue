@@ -7,14 +7,10 @@
       alt="Zebra photo"
     />
     <img v-else src="../../../assets/zebras.jpg" alt="Zebras" />
-    <div class="c-content mb-2">
+    <div class="c-content">
       <h3 class="is-family-sans-serif has-text-weight-semibold is-size-5 mb-2">
         {{ company.name }}
       </h3>
-      <span
-        v-html="company.description"
-        class="has-text-grey-dark is-size-7 ellipses"
-      ></span>
     </div>
     <div class="c-foot flex j-right">
       <b-dropdown position="is-top-right" aria-role="list">
@@ -50,13 +46,17 @@ import {
   Edit2Icon,
   Trash2Icon
 } from "vue-feather-icons";
-import { companyCollection } from "../../../db";
+import { companyCollection, storageRef } from "../../../db";
 
 export default {
   name: "CompanyCard",
   props: {
     company: {
       type: Object,
+      required: true
+    },
+    id: {
+      type: String,
       required: true
     }
   },
@@ -68,9 +68,7 @@ export default {
   },
   methods: {
     unarchive() {
-      companyCollection
-        .doc(this.company.id)
-        .set({ archived: false }, { merge: true });
+      companyCollection.doc(this.id).set({ archive: false }, { merge: true });
     },
     remove() {
       this.$buefy.dialog.confirm({
@@ -78,11 +76,100 @@ export default {
         message:
           "Are you sure you want to delete the company?. Any destination associated with the company will be lost. This operation can not be undone.",
         confirmText: "Delete",
-        onConfirm: () => companyCollection.doc(this.company.id).delete()
+        onConfirm: () => companyCollection.doc(this.id).delete()
       });
     },
     edit() {
       console.log("editing");
+    },
+    deleteCompany() {
+      companyCollection
+        .doc(this.id)
+        .get()
+        .then(result => {
+          if (result.exists) {
+            companyCollection
+              .doc(result.id)
+              .collection("destinations")
+              .get()
+              .then(destinations => {
+                if (destinations.empty) {
+                  if (result.data().imageUrl) {
+                    console.log("deleted images");
+                    storageRef.storage
+                      .refFromURL(result.data().imageUrl)
+                      .delete();
+                  }
+                  companyCollection.doc(result.id).delete();
+
+                  this.$buefy.snackbar.open({
+                    type: "is-success",
+                    position: "is-bottom-right",
+                    message: "Company deleted successfully."
+                  });
+                } else {
+                  destinations.forEach(d => {
+                    let destination = d.data();
+                    if (destination.images.length > 0) {
+                      destination.images.forEach(i => {
+                        storageRef.storage
+                          .refFromURL(i)
+                          .delete()
+                          .then(() => {
+                            companyCollection.doc(this.id).delete();
+                            this.$buefy.snackbar.open({
+                              type: "is-success",
+                              position: "is-bottom-right",
+                              message: "Company deleted successfully."
+                            });
+                          });
+                      });
+                    }
+                  });
+                }
+              })
+              .catch(error => {
+                this.$buefy.snackbar.open(
+                  "Company delete failed. " + error.message
+                );
+              });
+          } else {
+            this.$buefy.snackbar.open("Company delete failed.");
+          }
+        })
+        .catch(error => {
+          this.$buefy.snackbar.open({
+            message: "Company delete failed. " + error.message,
+            type: "is-warning",
+            position: "is-bottom-right"
+          });
+        });
+      // companyCollection.doc(this.id).collection("destinations")
+      // .get()
+      // .then(result => {
+      //   if(result.empty) {
+
+      //   } else {
+      //     result.forEach(dest => {
+      //     let destinations = dest.data();
+      //     if(destinations.images.length > 0) {
+      //       destinations.images.forEach(i => {
+      //         storageRef.storage.refFromURL(i).delete()
+      //         .then(() => {
+      //           companyCollection.doc(this.id).delete();
+      //         })
+      //       })
+      //     }
+      //   })
+      //   }
+      // })
+      // .catch(error => {
+      //   this.$buefy.snackbar.open({
+      //     message: "Company delete failed. " + error.message,
+      //     type: "is-warning",
+      //     position: "is-bottom-right"
+      //   })
+      // })
     }
   }
 };
@@ -96,10 +183,12 @@ export default {
 }
 
 .c-card {
-  max-width: 300px;
+  max-width: 220px;
   height: auto;
   display: inline-flex;
   flex-direction: column;
+
+  margin-right: 10px;
 
   img {
     border-radius: 4px;

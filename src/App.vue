@@ -78,7 +78,6 @@ $button-focus-box-shadow-color: none;
 $body-background-color: #fafaf2;
 $button-border-color: none;
 $button-hover-border-color: none;
-$button-color: white;
 $input-hover-color: white;
 $input-hover-border-color: #ffc11e;
 $button-hover-color: #414042;
