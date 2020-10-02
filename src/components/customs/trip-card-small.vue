@@ -1,9 +1,6 @@
 <template>
   <div class="trip-card">
-    <div class="wrapper">
-      <img :src="image" alt="Image card" />
-    </div>
-
+    <img :src="image" alt="Image card" />
     <div class="content">
       <h2
         class="has-text-black-bis is-family-sans-serif has-weight-semibold mb-2 is-size-6"
