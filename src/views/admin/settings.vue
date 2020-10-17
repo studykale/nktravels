@@ -127,6 +127,7 @@ export default {
       newEmail: "",
       newPassword: "",
       confirmPassword: "",
+      updatingPassword: false,
       passwordSubmitStatus: null,
       emailSubmitStatus: null
     };

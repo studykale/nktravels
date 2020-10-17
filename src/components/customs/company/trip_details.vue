@@ -15,7 +15,7 @@
       </div>
       <div v-if="destination">
         <h2
-          class="mb-3 is-family-sans-serif is-size-5 has-text-black-bis has-text-weight-semibold"
+          class="mb-3 is-family-sans-serif is-text-capitalized is-size-5 has-text-black-bis has-text-weight-semibold"
         >
           {{ destination.name }}
         </h2>
@@ -23,25 +23,58 @@
           <p class="is-size-7 has-text-grey">Category</p>
           <b class="mb-3">{{ destination.category }}</b>
         </div>
-        <span class="mb-3" v-html="destination.description"></span>
-        <div class="flex row wrap images">
-          <img
-            v-for="(img, i) in destination.images"
-            :key="i"
-            :src="img"
-            alt=""
-          />
+        <div class="flex f-column mb-2">
+          <p class="is-size-7 has-text-grey">
+            Description
+          </p>
+          <span class="mb-3" v-html="destination.description"></span>
         </div>
-        <p class="my-3">{{ destination.views || "0" }} Views</p>
-        <p v-if="destination.bookings">
-          {{ destination.bookings.length }} Bookings
-        </p>
+        <div class="mb-3">
+          <p class="is-size-7 has-text-grey">
+            Images.
+          </p>
+          <div
+            class="flex row wrap images"
+            v-if="destination.images.length > 0"
+          >
+            <img
+              v-for="(img, i) in destination.images"
+              :key="i"
+              :src="img"
+              alt=""
+            />
+          </div>
+          <div v-else>
+            <p>Trip does not have any images.</p>
+          </div>
+        </div>
+        <div class="my-3">
+          <p class="is-size-7 has-text-grey">Views</p>
+          <p>{{ destination.views || "0" }} Views</p>
+        </div>
+
+        <div class="my-3">
+          <p class="is-size-7 has-text-grey">
+            Bookings
+          </p>
+          <p v-if="destination.bookings">
+            {{ destination.bookings.length }} Bookings
+          </p>
+          <p v-else>
+            No bookings made.
+          </p>
+        </div>
+
+        <p>{{ destination.packages.length || 0 }} trip package(s)</p>
         <hr />
         <div class="flex row">
           <b-button class="mt-3 mr-2" type="is-info">Edit</b-button>
-          <b-button @click="confirmDelete" class="mt-3" type="is-danger"
+          <b-button @click="confirmDelete" class="mt-3 mr-2" type="is-danger"
             >Delete</b-button
           >
+          <b-button v-if="destination.bookings" type="is-primary" class="mt-3">
+            Bookings
+          </b-button>
         </div>
       </div>
     </div>
@@ -66,10 +99,11 @@ export default {
   },
   methods: {
     confirmDelete() {
+      this.openSide != this.openSide;
       this.$buefy.dialog.confirm({
         message:
           "Are you sure you want to delete the destination? This can not be undone.",
-        title: "Delete " + this.destination.name + "?",
+        title: "Delete trip",
         confirmText: "Delete",
         onConfirm: () => this.deleteDestination
       });

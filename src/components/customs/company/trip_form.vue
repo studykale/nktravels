@@ -154,11 +154,12 @@
                   required
                 ></b-input>
               </b-field>
-              <b-field label="Code">
+              <b-field label="Package description">
                 <b-input
-                  placeholder="Package code"
-                  v-model="p.code"
-                  required
+                  placeholder="Enter package description."
+                  v-model="p.description"
+                  maxlength="200"
+                  type="textarea"
                 ></b-input>
               </b-field>
               <b-field label="Package Cost">
@@ -301,7 +302,7 @@ export default {
       location: "Nairobi",
       packages: [
         {
-          code: "",
+          description: "",
           name: "",
           detail: "",
           cost: "",
@@ -408,10 +409,11 @@ export default {
     },
     addPackage() {
       this.packages.push({
+        description: "",
         name: "",
-        code: "",
         detail: "",
         cost: "",
+        noOfDays: 1,
         numberOfPeople: 1
       });
     },

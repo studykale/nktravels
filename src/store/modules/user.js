@@ -180,12 +180,14 @@ const User = {
           router.replace("admin/dashboard");
         })
         .catch(error => {
+          console.log("error from signin", error);
           //("error sign in", error)
           if (error.code == "auth/user-not-found") {
             Notification.open({
               type: "is-warning",
               message: "No account found by the email",
-              duration: 3000
+              duration: 3000,
+              position: "is-top"
             });
           }
 

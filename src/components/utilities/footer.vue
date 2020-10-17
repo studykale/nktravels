@@ -26,35 +26,13 @@
             </h4>
             <ul class="mt-3">
               <li>
-                Link One
+                Camping
               </li>
               <li>
-                Link One
+                Hiking
               </li>
               <li>
-                Link One
-              </li>
-              <li>
-                Link One
-              </li>
-            </ul>
-          </div>
-          <div class="column">
-            <h4 class="is-size-5 has-text-grey-dark has-text-weight-semibold">
-              Tours
-            </h4>
-            <ul class="mt-3">
-              <li>
-                Link One
-              </li>
-              <li>
-                Link One
-              </li>
-              <li>
-                Link One
-              </li>
-              <li>
-                Link One
+                Safaris
               </li>
             </ul>
           </div>
@@ -64,16 +42,10 @@
             </h4>
             <ul class="mt-3">
               <li>
-                Link One
+                Talk to us though +254712234345
               </li>
               <li>
-                Link One
-              </li>
-              <li>
-                Link One
-              </li>
-              <li>
-                Link One
+                Nairobi Kenya
               </li>
             </ul>
           </div>

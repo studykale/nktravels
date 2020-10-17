@@ -258,7 +258,7 @@
               >
               </b-input>
               <p class="control">
-                <button class="button is-primary">Contact Us</button>
+                <button class="button is-primary">Subscribe</button>
               </p>
             </b-field>
           </div>

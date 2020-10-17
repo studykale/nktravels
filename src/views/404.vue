@@ -2,7 +2,7 @@
   <div class="has-background-white">
     <div class="flex centered content-center 404 container px-3">
       <div class="my-10">
-        <div class="flex justify-center mb-5">
+        <div class="flex justify-center mb-5 mt-3">
           <img class="h-48 w-48" src="../assets/404.svg" alt="404 Icon" />
         </div>
         <div class="p-3">
