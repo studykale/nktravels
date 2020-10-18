@@ -338,6 +338,7 @@ export default {
 <style lang="scss">
 .landing-header-mobile {
   position: relative;
+  height: 60vh;
 
   @media screen and (min-width: 520px) {
     display: none;
@@ -355,14 +356,14 @@ export default {
     top: 0;
     left: 0;
     mix-blend-mode: overlay;
-    height: 50vh;
+    height: 60vh;
     object-fit: cover;
     object-position: left;
   }
 
   .content {
     background: #000000a1;
-    height: 50vh;
+    height: 60vh;
     align-items: center;
     padding: 3em 1em;
   }

@@ -7,11 +7,13 @@ import VueMoment from "vue-moment";
 import VueMasonry from "vue-masonry-css";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import VueCookies from "vue-cookies";
+import VueFuse from "vue-fuse";
 
 Vue.use(VueMoment);
 Vue.use(VueMasonry);
 Vue.use(CKEditor);
 Vue.use(VueCookies);
+Vue.use(VueFuse);
 
 Vue.config.productionTip = false;
 Vue.use(firestorePlugin);

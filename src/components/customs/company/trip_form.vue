@@ -74,11 +74,12 @@
               placeholder="Choose trip category"
               required
             >
-              <option value="honeymoon">Honey moon</option>
-              <option value="hiking">Hiking</option>
-              <option value="safaris">Safari</option>
-              <option value="Hotels">Hotels</option>
-              <option value="camping">Camping</option>
+              <option value="honeymoon">Africa Nature</option>
+              <option value="hiking">Adventure</option>
+              <option value="safaris">Wild Safari</option>
+              <option value="Hotels">Beach</option>
+              <option value="Hotels">Jungle Africa</option>
+              <option value="camping">Camping and Hike</option>
             </b-select>
           </b-field>
           <section>
@@ -94,7 +95,7 @@
                     <p>
                       <upload-cloud-icon size="3x"></upload-cloud-icon>
                     </p>
-                    <p>Drop your files here or click to upload</p>
+                    <p>Drop your images here or click to upload</p>
                   </div>
                 </section>
               </b-upload>

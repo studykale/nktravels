@@ -2,7 +2,11 @@
   <div class="container py-5">
     <div class="columns mx-2">
       <div class="column">
-        <h2 class="has-text-weight-semibold mb-4 is-size-3">NK Travels</h2>
+        <h2
+          class="is-family-sans-serif  has-text-weight-semibold mb-4 is-size-3"
+        >
+          NK Travels
+        </h2>
         <ul class="flex">
           <li class="mr-2">
             <facebook-icon
@@ -21,7 +25,9 @@
       <div class="column is-two-thirds">
         <div class="columns">
           <div class="column">
-            <h4 class="is-size-5 has-text-grey-dark has-text-weight-semibold">
+            <h4
+              class="is-family-sans-serif is-size-5 has-text-grey-dark has-text-weight-semibold"
+            >
               Destinations
             </h4>
             <ul class="mt-3">
@@ -37,7 +43,9 @@
             </ul>
           </div>
           <div class="column">
-            <h4 class="is-size-5 has-text-grey-dark has-text-weight-semibold">
+            <h4
+              class="is-family-sans-serif is-size-5 has-text-grey-dark has-text-weight-semibold"
+            >
               Contact Us
             </h4>
             <ul class="mt-3">
