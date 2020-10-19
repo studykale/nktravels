@@ -8,8 +8,8 @@ import VueMasonry from "vue-masonry-css";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import VueCookies from "vue-cookies";
 import VueFuse from "vue-fuse";
-import VueLoaders from 'vue-loaders';
- 
+import VueLoaders from "vue-loaders";
+
 Vue.use(VueLoaders);
 
 Vue.use(VueMoment);

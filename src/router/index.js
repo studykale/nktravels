@@ -1,15 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Meta from 'vue-meta'
+import Meta from "vue-meta";
 
 Vue.use(VueRouter);
 
 Vue.use(Meta, {
-  keyName: 'metaInfo',
-  attribute: 'data-vue-meta',
-  ssrAttribute: 'data-vue-meta-server-rendered',
-  tagIDKeyName: 'vmid',
+  keyName: "metaInfo",
+  attribute: "data-vue-meta",
+  ssrAttribute: "data-vue-meta-server-rendered",
+  tagIDKeyName: "vmid",
   refreshOnceOnNavigation: true
 });
 
@@ -21,9 +21,9 @@ const routes = [
     meta: {
       requiresAuth: false,
       sitemap: {
-        lastmod:    'October 19, 2020',
-        priority:    0.8,
-        changefreq: 'monthly',
+        lastmod: "October 19, 2020",
+        priority: 0.8,
+        changefreq: "monthly"
       }
     }
   },
@@ -34,9 +34,9 @@ const routes = [
     meta: {
       requiresAuth: false,
       sitemap: {
-        lastmod:    'October 19, 2020',
-        priority:    0.8,
-        changefreq: 'monthly',
+        lastmod: "October 19, 2020",
+        priority: 0.8,
+        changefreq: "monthly"
       }
     }
   },
@@ -47,9 +47,9 @@ const routes = [
     meta: {
       requiresAuth: false,
       sitemap: {
-        lastmod:    'October 19, 2020',
-        priority:    0.8,
-        changefreq: 'monthly',
+        lastmod: "October 19, 2020",
+        priority: 0.8,
+        changefreq: "monthly"
       }
     }
   },
@@ -62,7 +62,7 @@ const routes = [
     }
   },
   {
-    path: "/detail",
+    path: "/detail/company/:companyId/:tripName/:tripId",
     name: "Detail",
     component: () => import("../views/destination_detail.vue"),
     meta: {
@@ -76,9 +76,9 @@ const routes = [
     meta: {
       requiresAuth: false,
       sitemap: {
-        lastmod:    'October 19, 2020',
-        priority:    0.8,
-        changefreq: 'monthly',
+        lastmod: "October 19, 2020",
+        priority: 0.8,
+        changefreq: "monthly"
       }
     }
   },

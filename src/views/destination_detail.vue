@@ -2,18 +2,19 @@
   <div>
     <NavClient />
     <div class="wrapper has-background-white">
-      <div class="container mt-5 mb-3">
-        <div class="columns mx-2">
+      <div v-if="!loadingDestination" class="container mt-5 mb-3">
+        <div v-if="!errorFound" class="columns mx-2">
           <div class="column is-full-mobile is-half-desktop is-half-widescreen">
             <b-carousel
+            v-if="destination.images.length > 0"
               :autoplay="false"
               :overlay="gallery"
               @click="switchGallery(true)"
               :indicator-inside="false"
             >
-              <b-carousel-item class="my-3" v-for="(item, i) in 6" :key="i">
+              <b-carousel-item class="my-3" v-for="(image, i) in destination.images" :key="i">
                 <span class="image">
-                  <img :src="getImgUrl(i)" />
+                  <img :src="image" />
                 </span>
               </b-carousel-item>
               <span
@@ -25,12 +26,15 @@
                 <figure class="al image" :draggable="false">
                   <img
                     :draggable="false"
-                    :src="getImgUrl(props.i)"
+                    :src="props.i"
                     :title="props.i"
                   />
                 </figure>
               </template>
             </b-carousel>
+            <div v-else>
+              <p class="is-family-sans-serif">No images attached.</p>
+            </div>
             <div class="my-3">
               <b-button type="is-primary is-light">Book trip</b-button>
             </div>
@@ -38,31 +42,22 @@
               <h2
                 class="is-size-4 has-text-weight-semibold is-family-sans-serif"
               >
-                Mzima Springs
+                {{ destination.name }}
               </h2>
               <hr />
               <h4 class="has-text-weight-semibold is-family-sans-serif">
                 Details
               </h4>
-              <p class="my-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptate, illum pariatur. Corrupti voluptate dolorum tempore.
-              </p>
-              <p class="my-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptates in nam veritatis iste quos vitae qui adipisci
-                eveniet, mollitia ipsum. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Voluptate, illum pariatur. Corrupti voluptate
-                dolorum tempore.
-              </p>
-              <p class="my-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptate, illum pariatur. Corrupti voluptate dolorum tempore.
-              </p>
+              <div class="my-3">
+                <span v-html="destination.description"></span>
+              </div>
+              
               <br />
               <h4 class="has-text-weight-semibold is-family-sans-serif">
-                Pricing
+                Packages
               </h4>
+              <small>Choose the right package for you.</small>
+              <br />
               <br />
               <b-table
                 :data="data"
@@ -83,42 +78,45 @@
                 </h2>
               </div>
               <div class="card-content">
-                <form>
-                  <b-field :type="{ 'is-danger': nameErrors.length > 0 }"
-              :message="nameErrors" label="Name">
-                    <b-input required  v-model="$v.name.$model"></b-input>
+                <form @submit.prevent="sendMessageForTrip">
+                  <b-field
+                    :type="{ 'is-danger': nameErrors.length > 0 }"
+                    :message="nameErrors"
+                    label="Name"
+                  >
+                    <b-input required v-model="$v.name.$model"></b-input>
                   </b-field>
                   <b-field
                     :type="{ 'is-danger': emailErrors.length > 0 }"
-          :message="emailErrors"
-                   label="Email">
+                    :message="emailErrors"
+                    label="Email"
+                  >
                     <b-input required v-model.trim="$v.email.$model"></b-input>
                   </b-field>
-                  <b-field  label="Type">
-                    <b-radio v-model="type"
-                        name="name"
-                        native-value="inquiry">
-                        Inquiry
+                  <b-field label="Type">
+                    <b-radio v-model="type" name="name" native-value="inquiry">
+                      Inquiry
                     </b-radio>
-                    <b-radio v-model="type"
-                        name="name"
-                        native-value="complaint">
-                        Complaint
+                    <b-radio
+                      v-model="type"
+                      name="name"
+                      native-value="complaint"
+                    >
+                      Complaint
                     </b-radio>
-                    <b-radio v-model="type"
-                        name="name"
-                        native-value="request">
-                        Request
+                    <b-radio v-model="type" name="name" native-value="request">
+                      Request
                     </b-radio>
                   </b-field>
                   <b-field
                     :type="{ 'is-danger': messageErrors.length > 0 }"
-          :message="messageErrors"
-                   label="Message">
+                    :message="messageErrors"
+                    label="Message"
+                  >
                     <b-input
                       maxlength="200"
                       type="textarea"
-                       v-model="$v.message.$model"
+                      v-model="$v.message.$model"
                     ></b-input>
                   </b-field>
                   <button class="button is-primary mt-3" type="submit">
@@ -129,6 +127,21 @@
             </div>
           </div>
         </div>
+        <div class="flex items-center centered">
+          <b-message title="Destination not found" type="is-danger" aria-close-label="Close message">
+            {{ errorMessage }}
+            <span class="mt-2">
+              <router-link to="/find-trip">
+                Go home
+              </router-link>
+            </span>
+          </b-message>
+        </div>
+      </div>
+      <div class="h-100 flex items-center centered" v-else>
+        <p class="is-family-sans-serif">
+          Loading destination...
+        </p>
       </div>
     </div>
   </div>
@@ -136,7 +149,7 @@
 
 <script>
 import NavClient from "@/components/utilities/nav.vue";
-import db from '../db';
+import db, { companyCollection } from "../db";
 const data = [
   {
     id: 1,
@@ -185,12 +198,6 @@ const {
 
 export default {
   name: "TripDetails",
-  props: {
-    trip: {
-      type: Object,
-      required: true
-    }
-  },
   mixins: [validationMixin],
   components: {
     NavClient
@@ -205,6 +212,8 @@ export default {
       type: "inquiry",
       name: "",
       message: "",
+      destination: {},
+      loadingDestination: false,
       columns: [
         {
           field: "id",
@@ -231,6 +240,8 @@ export default {
         }
       ],
       isSubmittingMessage: false,
+      errorMessage: "",
+      errorFound: false
     };
   },
   validations: {
@@ -244,42 +255,40 @@ export default {
     },
     message: {
       required,
-       max: maxLength(300),
+      max: maxLength(300),
       min: minLength(100)
     }
   },
   methods: {
     sendMessageForTrip() {
       this.isSubmittingMessage = true;
-      db.collection(`companies/${this.trip.companyId}/destinations/${this.trip.id}/messages`)
-      .add({
-        name: this.name,
-        email: this.email,
-        message: this.message
-      })
-      .then(() => {
-        this.isSubmittingMessage = false;
-        this.$buefy.snackbar.open({
-          message: "Message sent successfully. Thank you for your feedback.",
-          position: "is-bottom-right",
-          type: "is-info"
+      db.collection(
+        `companies/${this.$route.params.companyId}/destinations/${this.$route.params.tripId}/messages`
+      )
+        .add({
+          name: this.name,
+          email: this.email,
+          message: this.message
+        })
+        .then(() => {
+          this.isSubmittingMessage = false;
+          this.$buefy.snackbar.open({
+            message: "Message sent successfully. Thank you for your feedback.",
+            position: "is-bottom-right",
+            type: "is-info"
+          });
+        })
+        .catch(error => {
+          this.isSubmittingMessage = false;
+          this.$buefy.snackbar.open({
+            message: "Message was not sent. " + error.message,
+            position: "is-bottom-right",
+            type: "is-info"
+          });
         });
-      })
-      .catch(error => {
-        this.isSubmittingMessage = false;
-        this.$buefy.snackbar.open({
-          message: "Message was not sent. " + error.message,
-          position: "is-bottom-right",
-          type: "is-info"
-        });
-      })
     },
     getImgUrl(value) {
       return `https://picsum.photos/id/43${value}/1230/500`;
-    },
-    setType(type) {
-      this.type = type;
-      console.log("type", this.type)
     },
     switchGallery(value) {
       this.gallery = value;
@@ -288,8 +297,7 @@ export default {
       } else {
         return document.documentElement.classList.remove("is-clipped");
       }
-    },
-
+    }
   },
   computed: {
     emailErrors() {
@@ -331,6 +339,25 @@ export default {
 
       return errors;
     }
+  },
+  created() {
+    this.loadingDestination = true;
+    companyCollection.doc(this.$route.params.companyId)
+    .collection("destinations")
+    .doc(this.$route.params.tripId)
+    .get()
+    .then(result => {
+      this.loadingDestination = false;
+      if(result.exists) {
+        this.destination = result.data();
+      }
+    })
+    .catch(error => {
+      this.loadingDestination = false;
+      // If the destination was not loaded.
+      this.errorFound = true;
+      this.errorMessage = "Sorry we were unable to access the destination details. " + error.message;
+    })
   }
 };
 </script>

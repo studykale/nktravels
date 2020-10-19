@@ -45,6 +45,7 @@
             :key="dest.id"
             :days="dest.days || 1"
             :name="dest.name"
+            :trip="dest"
             :image="
               dest.images[0] || 'https://source.unsplash.com/weekly?hiking'
             "
@@ -101,7 +102,7 @@ export default {
       console.log("updated");
     },
     setDestinations(c) {
-      this.loadingDestinations =  true;
+      this.loadingDestinations = true;
       c.forEach(company => {
         // console.log("company", company);
         companyCollection
@@ -132,8 +133,9 @@ export default {
             this.$buefy.snackbar.open({
               position: "is-top-right",
 
-              message: "Sorry we were unable tomload all trips. " + error.message
-            })
+              message:
+                "Sorry we were unable tomload all trips. " + error.message
+            });
           });
       });
     }
