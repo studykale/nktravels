@@ -33,9 +33,9 @@
           <router-link to="/find-trip" class="button is-primary">
             <strong>Find your trip</strong>
           </router-link>
-          <a class="button is-light">
+          <router-link to="/contactus" class="button is-light">
             Contact Us
-          </a>
+          </router-link>
         </div>
       </b-navbar-item>
     </template>

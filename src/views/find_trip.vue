@@ -2,7 +2,7 @@
   <div class=" has-background-white w-100 findtrip">
     <Nav />
 
-    <div class=" container">
+    <div v-if="!loadingDestinations" class=" container">
       <div class="px-3 py-2">
         <div class="flex j-between items-center">
           <h2
@@ -11,7 +11,10 @@
             All
           </h2>
           <div class="flex row">
-            <button @click="showSearchModal" class="button is-danger is-rounded mr-3">
+            <button
+              @click="showSearchModal"
+              class="button is-danger is-rounded mr-3"
+            >
               <search-icon
                 size="1.5x"
                 class="has-text-white icon-btn"
@@ -20,103 +23,54 @@
             </button>
 
             <b-dropdown position="is-bottom-left" aria-role="list">
-              <button
-                class="button is-light is-rounded"
-                slot="trigger"
-                
-              >
+              <button class="button is-light is-rounded" slot="trigger">
                 <filter-icon
                   size="1.5x"
-                  
                   class="has-text-primary icon-btn"
                 ></filter-icon>
                 <span class="icon-text">
                   Filter
                 </span>
               </button>
-
-              <b-dropdown-item aria-role="listitem"
-                >Camping and Hiking</b-dropdown-item
-              >
-              <b-dropdown-item aria-role="listitem"
-                >Africa Jungle</b-dropdown-item
-              >
-              <b-dropdown-item aria-role="listitem"
-                >Wild Safari</b-dropdown-item
-              >
-              <b-dropdown-item aria-role="listitem"
-                >Beach and Hotels</b-dropdown-item
-              >
+              <b-dropdown-item aria-role="listitem">Category</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">No of days</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">Location</b-dropdown-item>
             </b-dropdown>
           </div>
         </div>
-
         <hr />
         <div class="flex row wrap">
           <TripCardSmall
-            days="2"
-            image="https://source.unsplash.com/daily?savanna"
-            name="Safari lodge"
-            description="Awesome safari lodge awesome description"
-          />
-          <TripCardSmall
-            days="7"
-            image="https://source.unsplash.com/daily?savanna"
-            name="Safari lodge"
-            description="Awesome safari lodge awesome description"
-          />
-          <TripCardSmall
-            days="5"
-            image="https://source.unsplash.com/daily?savanna"
-            name="Safari lodge"
-            description="Awesome safari lodge awesome description"
-          />
-          <TripCardSmall
-            days="2"
-            image="https://source.unsplash.com/daily?savanna"
-            name="Safari lodge"
-            description="Awesome safari lodge awesome description"
-          />
-          <TripCardSmall
-            days="5"
-            image="https://source.unsplash.com/daily?savanna"
-            name="Safari lodge"
-            description="Awesome safari lodge awesome description"
+            v-for="dest in destinations"
+            :key="dest.id"
+            :days="dest.days || 1"
+            :name="dest.name"
+            :image="
+              dest.images[0] || 'https://source.unsplash.com/weekly?hiking'
+            "
+            :description="dest.summary || 'Destination summary not set.'"
           />
         </div>
       </div>
     </div>
+    <div class="flex items-centered centered py-4 h-100" v-else>
+      <p class="is-family-sans-serif">Loading...</p>
+    </div>
     <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
-            <div class="card mx-2">
-              <div class="card-content">
-                <h2 class="is-family-sans-serif is-size-5 has-text-weight-semibold">
-
-                Search All.
-                </h2>
-                <hr>
-                <b-field>
-                  <b-input rounded placeholder="Search..."
-                      type="search"
-                      size="is-medium"
-                      icon-pack="fas"
-                      v-model="term"
-                      icon="search">
-                  </b-input>
-                </b-field>
-              </div>
-            </div>
-        </b-modal>
+      <Search :dta="destinations" />
+    </b-modal>
     <FooterClient />
   </div>
 </template>
 
 <script>
 import Nav from "@/components/utilities/nav.vue";
-// import Search from "@/components/utilities/search.vue";
+import Search from "@/components/utilities/search.vue";
 import TripCardSmall from "@/components/customs/trip-card-small.vue";
 import FooterClient from "../components/utilities/footer";
 import { companyCollection } from "../db";
 import { SearchIcon, FilterIcon } from "vue-feather-icons";
+// import { sortBy } from "lodash";
 
 export default {
   name: "FindTrip",
@@ -125,28 +79,71 @@ export default {
     SearchIcon,
     TripCardSmall,
     FooterClient,
-    FilterIcon
+    FilterIcon,
+    Search
   },
   data() {
     return {
+      loadingDestinations: false,
       isCardModalActive: false,
       companies: [],
       destinations: [],
-      term: ""
+      sortedDestinations: [],
+      term: "",
+      keys: ["company", "name", "location", "tags"]
     };
   },
   methods: {
     showSearchModal() {
-      console.log("showing", this.isCardModalActive);
       this.isCardModalActive = true;
+    },
+    destinationsChanged() {
+      console.log("updated");
+    },
+    setDestinations(c) {
+      this.loadingDestinations =  true;
+      c.forEach(company => {
+        // console.log("company", company);
+        companyCollection
+          .doc(`${company.id}`)
+          .collection("destinations")
+          .get()
+          .then(querySnapshots => {
+            this.loadingDestinations = false;
+            console.log("queried");
+            if (querySnapshots.empty) {
+              console.log("empty trips");
+            } else {
+              querySnapshots.forEach(doc => {
+                let destination = doc.data();
+                console.log("data", destination);
+
+                this.destinations.push({
+                  id: doc.id,
+                  company: company.name,
+                  companyId: company.id,
+                  ...destination
+                });
+              });
+            }
+          })
+          .catch(error => {
+            this.loadingDestinations = false;
+            this.$buefy.snackbar.open({
+              position: "is-top-right",
+
+              message: "Sorry we were unable tomload all trips. " + error.message
+            })
+          });
+      });
     }
   },
   created() {
     this.$bind(
       "companies",
-      companyCollection.where("archive", "==", false)
+      companyCollection.where("archived", "==", false)
     ).then(c => {
-      console.log("companies", c);
+      this.setDestinations(c);
     });
   }
 };
@@ -184,5 +181,9 @@ export default {
   background-blend-mode: screen;
   min-height: 100vh;
   background-size: cover;
+}
+
+.items-centered {
+  align-items: center !important;
 }
 </style>

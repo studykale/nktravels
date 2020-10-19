@@ -7,6 +7,13 @@
         >
           NK Travels
         </h2>
+        <img
+          height="100"
+          width="100"
+          src="@/assets/lipanampesa.png"
+          alt="NK travels lipa na mpesa"
+        />
+        <br />
         <ul class="flex">
           <li class="mr-2">
             <facebook-icon

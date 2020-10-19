@@ -84,24 +84,41 @@
               </div>
               <div class="card-content">
                 <form>
-                  <b-field label="Name">
-                    <b-input v-model="name"></b-input>
+                  <b-field :type="{ 'is-danger': nameErrors.length > 0 }"
+              :message="nameErrors" label="Name">
+                    <b-input required  v-model="$v.name.$model"></b-input>
                   </b-field>
-                  <b-field label="Email">
-                    <b-input v-model="email"></b-input>
+                  <b-field
+                    :type="{ 'is-danger': emailErrors.length > 0 }"
+          :message="emailErrors"
+                   label="Email">
+                    <b-input required v-model.trim="$v.email.$model"></b-input>
                   </b-field>
-                  <b-field label="Type">
-                    <b-select placeholder="Choose your option" required>
-                      <option value="booking">Booking</option>
-                      <option value="guides">Guides</option>
-                      <option value="Complaint">Complaint</option>
-                    </b-select>
+                  <b-field  label="Type">
+                    <b-radio v-model="type"
+                        name="name"
+                        native-value="inquiry">
+                        Inquiry
+                    </b-radio>
+                    <b-radio v-model="type"
+                        name="name"
+                        native-value="complaint">
+                        Complaint
+                    </b-radio>
+                    <b-radio v-model="type"
+                        name="name"
+                        native-value="request">
+                        Request
+                    </b-radio>
                   </b-field>
-                  <b-field label="Message">
+                  <b-field
+                    :type="{ 'is-danger': messageErrors.length > 0 }"
+          :message="messageErrors"
+                   label="Message">
                     <b-input
                       maxlength="200"
                       type="textarea"
-                      v-model="message"
+                       v-model="$v.message.$model"
                     ></b-input>
                   </b-field>
                   <button class="button is-primary mt-3" type="submit">
@@ -119,6 +136,7 @@
 
 <script>
 import NavClient from "@/components/utilities/nav.vue";
+import db from '../db';
 const data = [
   {
     id: 1,
@@ -157,7 +175,23 @@ const data = [
   }
 ];
 
+import { validationMixin } from "vuelidate";
+const {
+  required,
+  minLength,
+  maxLength,
+  email
+} = require("vuelidate/lib/validators");
+
 export default {
+  name: "TripDetails",
+  props: {
+    trip: {
+      type: Object,
+      required: true
+    }
+  },
+  mixins: [validationMixin],
   components: {
     NavClient
   },
@@ -168,6 +202,7 @@ export default {
       data,
       selected: data[1],
       email: "",
+      type: "inquiry",
       name: "",
       message: "",
       columns: [
@@ -194,12 +229,57 @@ export default {
           field: "gender",
           label: "Gender"
         }
-      ]
+      ],
+      isSubmittingMessage: false,
     };
   },
+  validations: {
+    email: {
+      required,
+      email
+    },
+    name: {
+      required,
+      max: maxLength(10)
+    },
+    message: {
+      required,
+       max: maxLength(300),
+      min: minLength(100)
+    }
+  },
   methods: {
+    sendMessageForTrip() {
+      this.isSubmittingMessage = true;
+      db.collection(`companies/${this.trip.companyId}/destinations/${this.trip.id}/messages`)
+      .add({
+        name: this.name,
+        email: this.email,
+        message: this.message
+      })
+      .then(() => {
+        this.isSubmittingMessage = false;
+        this.$buefy.snackbar.open({
+          message: "Message sent successfully. Thank you for your feedback.",
+          position: "is-bottom-right",
+          type: "is-info"
+        });
+      })
+      .catch(error => {
+        this.isSubmittingMessage = false;
+        this.$buefy.snackbar.open({
+          message: "Message was not sent. " + error.message,
+          position: "is-bottom-right",
+          type: "is-info"
+        });
+      })
+    },
     getImgUrl(value) {
       return `https://picsum.photos/id/43${value}/1230/500`;
+    },
+    setType(type) {
+      this.type = type;
+      console.log("type", this.type)
     },
     switchGallery(value) {
       this.gallery = value;
@@ -208,6 +288,48 @@ export default {
       } else {
         return document.documentElement.classList.remove("is-clipped");
       }
+    },
+
+  },
+  computed: {
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) {
+        return errors;
+      } else if (!this.$v.email.email) {
+        errors.push("Please enter a valid email address");
+      } else if (!this.$v.email.required) {
+        errors.push("Email is required");
+      }
+      return errors;
+    },
+    nameErrors() {
+      const errors = [];
+
+      if (!this.$v.name.$dirty) {
+        return errors;
+      }
+      if (!this.$v.name.required) {
+        errors.push("Please add this field");
+      }
+      if (!this.$v.name.max) {
+        errors.push("Your name is too long. Please review it");
+      }
+
+      return errors;
+    },
+    messageErrors() {
+      const errors = [];
+
+      if (!this.$v.message.$dirty) {
+        return errors;
+      } else if (!this.$v.message.min) {
+        errors.push("Please be more descriptive. Thank you");
+      } else if (!this.$v.message.max) {
+        errors.push("Your message is too long. Please make it short.Thank you");
+      }
+
+      return errors;
     }
   }
 };
@@ -228,5 +350,9 @@ img {
   min-height: 100vh;
   margin-top: -25px;
   margin-bottom: 2em;
+}
+
+.radio.control-label:hover {
+  color: grey !important;
 }
 </style>

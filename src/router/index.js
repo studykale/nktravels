@@ -1,8 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Meta from 'vue-meta'
 
 Vue.use(VueRouter);
+
+Vue.use(Meta, {
+  keyName: 'metaInfo',
+  attribute: 'data-vue-meta',
+  ssrAttribute: 'data-vue-meta-server-rendered',
+  tagIDKeyName: 'vmid',
+  refreshOnceOnNavigation: true
+});
 
 const routes = [
   {
@@ -10,7 +19,12 @@ const routes = [
     name: "Home",
     component: Home,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      sitemap: {
+        lastmod:    'October 19, 2020',
+        priority:    0.8,
+        changefreq: 'monthly',
+      }
     }
   },
   {
@@ -18,7 +32,12 @@ const routes = [
     name: "About",
     component: () => import("../views/About.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      sitemap: {
+        lastmod:    'October 19, 2020',
+        priority:    0.8,
+        changefreq: 'monthly',
+      }
     }
   },
   {
@@ -26,7 +45,12 @@ const routes = [
     name: "ContactUs",
     component: () => import("../views/contactus.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      sitemap: {
+        lastmod:    'October 19, 2020',
+        priority:    0.8,
+        changefreq: 'monthly',
+      }
     }
   },
   {
@@ -50,7 +74,12 @@ const routes = [
     name: "FindTrip",
     component: () => import("../views/find_trip.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      sitemap: {
+        lastmod:    'October 19, 2020',
+        priority:    0.8,
+        changefreq: 'monthly',
+      }
     }
   },
   {

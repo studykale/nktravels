@@ -133,6 +133,10 @@ $colors: (
   )
 );
 
+.has-text-center {
+  text-align: center;
+}
+
 // Links
 $link: $primary;
 $link-invert: $primary-invert;

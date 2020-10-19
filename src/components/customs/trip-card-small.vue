@@ -12,6 +12,9 @@
       >
         {{ name }}
       </h2>
+      <div class="field my-2" v-if="booked">
+        <b-tag rounded>Fully Booked</b-tag>
+      </div>
       <p class="has-text-grey-bis is-size-6">{{ description }}</p>
       <router-link to="/detail" class="is-size-6">Read more</router-link>
     </div>
@@ -21,7 +24,7 @@
 <script>
 export default {
   name: "TripCardSmall",
-  props: ["image", "name", "description", "days"]
+  props: ["image", "name", "description", "days", "booked"]
 };
 </script>
 
