@@ -2,7 +2,7 @@ module.exports = {
   pluginOptions: {
     prerenderSpa: {
       registry: undefined,
-      renderRoutes: ["/", "/about", "/auth/auth/login", "/auth/auth/signup"],
+      renderRoutes: ["/", "/about", "/gallery", "/find-trip", "/contactus"],
       useRenderEvent: true,
       headless: true,
       onlyProduction: true
@@ -12,10 +12,11 @@ module.exports = {
       outputDir: "public",
       pretty: true,
       urls: [
-        "https://studykale.com/",
-        "https://studykale.com/aboutus",
-        "https://studykale.com/auth/login",
-        "https://studykale.com/auth/signup"
+        "https://nktravelsafaris.com/",
+        "https://nktravelsafaris/aboutus",
+        "https://nktravelsafaris/gallery",
+        "https://nktravelsafaris/find-trip",
+        "https://nktravelsafaris/contactus"
       ]
     }
   }
