@@ -20,10 +20,10 @@ module.exports = {
       pretty: true,
       urls: [
         "https://nktravelsafaris.com/",
-        "https://nktravelsafaris/aboutus",
-        "https://nktravelsafaris/gallery",
-        "https://nktravelsafaris/find-trip",
-        "https://nktravelsafaris/contactus"
+        "https://nktravelsafaris.com/aboutus",
+        "https://nktravelsafaris.com/gallery",
+        "https://nktravelsafaris.com/find-trip",
+        "https://nktravelsafaris.com/contactus"
       ]
     }
   }
