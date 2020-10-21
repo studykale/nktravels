@@ -30,12 +30,12 @@
       <!-- Results -->
       <div v-if="search.length > 0" class="searchResults">
         <div class="flex f-column" ref="results">
-          <router-link
+          <div
             v-for="(trip, i) in searchResults"
             :key="i"
             @mousedown.prevent="searchResultsVisible == true"
             :class="{ 'has-background-white-ter': i == highlightedIndex }"
-            to="/detail"
+            @click="getTripDetails(trip)"
             class="flex row px-3 py-2"
           >
             <div class="flex f-column">
@@ -47,7 +47,7 @@
               }}</span>
               <span class="is-size-7">{{ trip.location }}</span>
             </div>
-          </router-link>
+          </div>
         </div>
         <div class="my-1" v-if="searchResults.length === 0">
           <p
@@ -87,6 +87,11 @@ export default {
     };
   },
   methods: {
+    getTripDetails(trip) {
+      this.$router.push({
+        path: `/detail/company/${trip.companyId}/${trip.name}/${trip.id}`
+      });
+    },
     reset() {
       this.search = "";
     },

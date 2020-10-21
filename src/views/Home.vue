@@ -182,15 +182,15 @@
         </div>
       </div>
     </section>
-    <section class="has-background-white my-3">
+    <!-- <section class="has-background-white my-3">
       <div class="container">
         <div class="popular-places mx-2">
           <div class="mb-3">
             <h2 class="is-family-sans-serif has-text-weight-semibold is-size-4">
               Popular places
             </h2>
-          </div>
-          <b-tabs class="mt-3" v-model="activeTab">
+          </div> -->
+          <!-- <b-tabs class="mt-3" v-model="activeTab">
             <b-tab-item label="Wild Safari">
               <div class="flex scrollWrapper" v-dragscroll.nochildren.x="true">
                 <TripCard :image="tab1Image" />
@@ -231,10 +231,10 @@
                 <TripCard :image="tab4Image" />
               </div>
             </b-tab-item>
-          </b-tabs>
-        </div>
+          </b-tabs> -->
+        <!-- </div>
       </div>
-    </section>
+    </section> -->
     <section class="has-background-warning my-3">
       <div class="container">
         <div class="columns mx-2 py-5">
@@ -245,19 +245,26 @@
               Newsletter
             </h2>
             <p class="mb-2 is-family-primary">
-              Do you want to get awesome deals at the moment they come up. Well, subscribe to our newsletter and get notified
+              Do you want to get awesome deals at the moment they come up. Well,
+              subscribe to our newsletter and get notified
             </p>
-            <b-field class="mt-3">
-              <b-input
-                placeholder="Enter your email address."
-                type="email"
-                icon="phone"
-              >
-              </b-input>
-              <p class="control">
-                <button class="button is-primary">Subscribe</button>
-              </p>
-            </b-field>
+            <form @submit.prevent="addSubscribers">
+              <b-field class="mt-3">
+                <b-input
+                  v-model="subEmail"
+                  placeholder="Enter your email address."
+                  type="email"
+                  icon="phone"
+                  
+                >
+                </b-input>
+                <p class="control">
+                  <button type="submit" class="button is-primary">
+                    Subscribe
+                  </button>
+                </p>
+              </b-field>
+            </form>
           </div>
           <div class="column"></div>
         </div>
@@ -271,10 +278,11 @@
 
 <script>
 import { ArrowRightIcon } from "vue-feather-icons";
-import TripCard from "@/components/customs/trip-card.vue";
+// import TripCard from "@/components/customs/trip-card.vue";
 import { dragscroll } from "vue-dragscroll";
 import NavClient from "@/components/utilities/nav.vue";
 import FooterClient from "@/components/utilities/footer.vue";
+import db from "../db";
 
 const customIconConfig = {
   customIconPacks: {
@@ -310,7 +318,7 @@ export default {
   name: "Home",
   components: {
     ArrowRightIcon,
-    TripCard,
+    // TripCard,
     NavClient,
     FooterClient
   },
@@ -319,12 +327,43 @@ export default {
   },
   data() {
     return {
+      subEmail: "",
       activeTab: 0,
       tab1Image: "https://source.unsplash.com/daily?savanna",
       tab2Image: "https://source.unsplash.com/weekly?hiking",
       tab3Image: "https://source.unsplash.com/weekly?forest",
       tab4Image: "https://source.unsplash.com/weekly?jungle"
     };
+  },
+  methods: {
+    addSubscribers() {
+      if(!this.subEmail || this.subEmail.length < 3) {
+        this.$buefy.snackbar.open("Please enter your email.")
+      }
+      db.collection("subscribers")
+        .add({
+          email: this.subEmail
+        })
+        .then(() => {
+          this.subEmail = "";
+          this.$buefy.snackbar.open({
+            message:
+              "You are succesfully subscribed. We promise we won't spam.",
+            type: "is-success",
+            position: "is-bottom-right"
+          });
+        })
+        .catch(error => {
+          console.log("error", error);
+          this.subEmail = "";
+
+          this.$buefy.snackbar.open({
+            message: "We were unable to subscribe you. " + error.message,
+            type: "is-danger",
+            position: "is-bottom-right"
+          });
+        });
+    }
   },
   created() {
     this.$buefy.config.setOptions(customIconConfig);

@@ -9,13 +9,13 @@
           >
             Why Choose Us?
           </h2>
-          <p>
+          <p class="w-75">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
             eveniet sapiente consequuntur aperiam aspernatur neque provident?
             Accusantium, expedita quos enim est ducimus voluptatibus magni odio,
             illo praesentium excepturi iure. Accusantium!
           </p>
-          <p class="my-3">
+          <p class="my-3 w-75">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque
             beatae eius quibusdam odio praesentium minus, dolorem libero hic
             consequuntur ratione dicta repellendus ipsam, cum vel velit
@@ -27,7 +27,8 @@
           <div class="card team">
             <div class="card-content">
               <img
-                src="https://source.unsplash.com/weekly?guides"
+                style="object-position: center"
+                src="https://source.unsplash.com/random?meeting"
                 alt="Water"
               />
             </div>
@@ -39,7 +40,7 @@
           >
             Our Gallery
           </h2>
-          <p class="my-3">
+          <p class="my-3 w-75">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
             laboriosam voluptate ex id omnis numquam modi, asperiores error
             officiis repellat?
@@ -156,11 +157,19 @@ export default {
   height: 50%;
 }
 
+.w-75 {
+  width: 75%;
+
+  @media screen and (max-width: 520px) {
+    width: 100%;
+  }
+}
+
 .team {
-  height: 300px;
+  height: 400px;
 
   img {
-    height: calc(300px - 3rem);
+    height: calc(400px - 3rem);
     width: 100%;
     object-fit: cover;
     object-position: center;

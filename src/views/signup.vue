@@ -16,6 +16,9 @@
 <script>
 import SignUpCard from "@/components/customs/auth/signup.vue";
 export default {
+  metaInfo: {
+    title: "Admin only"
+  },
   components: {
     SignUpCard
   }

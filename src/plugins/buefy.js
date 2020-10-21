@@ -19,6 +19,7 @@ import {
   faCaretUp,
   faUpload,
   faCalendar,
+  faCalendarDay,
   faAddressBook,
   faTag
 } from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +44,8 @@ library.add(
   faCaretUp,
   faUpload,
   faSlidersH,
-  faCalendar
+  faCalendar,
+  faCalendarDay
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 

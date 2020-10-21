@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.11/css/unicons.css">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  
-    <script type="application/ld+json">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+  <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.11/css/unicons.css"> -->
+  <title><%= htmlWebpackPlugin.options.title %></title>
+
+  <!-- SEO meta tags -->
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="NK travel safaris">
+  <meta name="description"
+    content="If you are looking for tours and travel we are here for you. Get connected with right travel agents here who will make your holiday a sensation. At nk travel safaris where we turn holiday to adventure">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.nktravelsafaris.com/">
+  <meta property="og:title" content="NK travel safaris">
+  <meta property="og:description"
+    content="If you are looking for tours and travel we are here for you. Get connected with right travel agents here who will make your holiday a sensation. At nk travel safaris where we turn holiday to adventure">
+  <meta property="og:image" content="<%=BASE_URL %>logo.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.nktravelsafaris.com/">
+  <meta property="twitter:title" content="NK travel safaris">
+  <meta property="twitter:description"
+    content="If you are looking for tours and travel we are here for you. Get connected with right travel agents here who will make your holiday a sensation. At nk travel safaris we turn holidays to adventure.">
+  <meta property="twitter:image" content="<%=BASE_URL %>logo.png">
+  <script type="application/ld+json">
       {
         "@context" : "http://schema.org",
         "@type" : "LocalBusiness",
@@ -16,12 +39,15 @@
         "image" : "https://studykale.com/logobig.jpeg",
       }
       </script>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>

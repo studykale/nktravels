@@ -1,11 +1,18 @@
 <template>
   <div class="card">
-    <div class="card-header px-4 py-3">
+    <div class="card-header flex f-column px-4 py-3">
       <h2
         class="has-text-centeris-size-5 is-family-sans-serif has-text-weight-semibold"
       >
         Contact us.
       </h2>
+      <p class="is-size-7">
+        Our contact info is
+        <span class="ml-2">
+          <a href="tel:0741943157">0741943157</a> or
+          <a href="tel:0757227976">0757227976</a>.
+        </span>
+      </p>
     </div>
     <div class="card-content">
       <form @submit.prevent="sendContact">

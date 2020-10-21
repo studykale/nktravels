@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  metaInfo: {
+    title: "NK travel safaris",
+    titleTemplate: "%s | NK"
+  }
+};
+</script>
+
 <style lang="scss">
 // @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@700;800&family=Montserrat:wght@400;500&family=Opensans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap");
@@ -67,6 +76,10 @@ body {
 
 .card.max-300 {
   max-width: 320px;
+}
+
+.mx-a {
+  margin: 0 auto;
 }
 
 // Set your colors

@@ -36,7 +36,9 @@
               <p class="is-family-sans-serif">No images attached.</p>
             </div>
             <div class="my-3">
-              <b-button type="is-primary is-light">Book trip</b-button>
+              <b-button @click="bookDestination" type="is-primary is-light"
+                >Book trip</b-button
+              >
             </div>
             <div class="mt-3">
               <h2
@@ -99,7 +101,12 @@
                     <b-input required v-model.trim="$v.email.$model"></b-input>
                   </b-field>
                   <b-field label="Type">
-                    <b-radio size="is-small" v-model="type" name="name" native-value="inquiry">
+                    <b-radio
+                      size="is-small"
+                      v-model="type"
+                      name="name"
+                      native-value="inquiry"
+                    >
                       Inquiry
                     </b-radio>
                     <b-radio
@@ -110,7 +117,12 @@
                     >
                       Complaint
                     </b-radio>
-                    <b-radio size="is-small" v-model="type" name="name" native-value="request">
+                    <b-radio
+                      size="is-small"
+                      v-model="type"
+                      name="name"
+                      native-value="request"
+                    >
                       Request
                     </b-radio>
                   </b-field>
@@ -125,7 +137,11 @@
                       v-model="$v.message.$model"
                     ></b-input>
                   </b-field>
-                  <button :class="{ 'is-loading': isSubmittingMessage }" class="button is-primary mt-3" type="submit">
+                  <button
+                    :class="{ 'is-loading': isSubmittingMessage }"
+                    class="button is-primary mt-3"
+                    type="submit"
+                  >
                     Send
                   </button>
                 </form>
@@ -141,15 +157,19 @@
           >
             {{ errorMessage }}
             <span class="mt-2">
-
-
-
               <router-link to="/find-trip">
                 Go home
               </router-link>
             </span>
           </b-message>
         </div>
+        <b-modal scroll="keep" v-model="showBookingForm">
+          <BookingForm
+            :trip="destination"
+            :companyId="$route.params.companyId"
+            :tripId="$route.params.tripId"
+          />
+        </b-modal>
       </div>
       <div class="h-100 flex items-center centered" v-else>
         <p class="is-family-sans-serif">
@@ -163,8 +183,7 @@
 <script>
 import NavClient from "@/components/utilities/nav.vue";
 import db, { companyCollection } from "../db";
-
-
+import BookingForm from "@/components/utilities/booking_form.vue";
 import { validationMixin } from "vuelidate";
 const {
   required,
@@ -177,7 +196,8 @@ export default {
   name: "TripDetails",
   mixins: [validationMixin],
   components: {
-    NavClient
+    NavClient,
+    BookingForm
   },
   data() {
     return {
@@ -194,8 +214,7 @@ export default {
         {
           field: "name",
           label: "Name",
-          width: "40",
-         
+          width: "40"
         },
         {
           field: "noOfDays",
@@ -209,11 +228,12 @@ export default {
           field: "numberOfPeople",
           label: "No of people",
           centered: true
-        },
+        }
       ],
       isSubmittingMessage: false,
       errorMessage: "",
-      errorFound: false
+      errorFound: false,
+      showBookingForm: false
     };
   },
   validations: {
@@ -232,8 +252,11 @@ export default {
     }
   },
   methods: {
+    bookDestination() {
+      this.showBookingForm = !this.showBookingForm;
+    },
     toggle(row) {
-      this.$refs.table.toggleDetails(row)
+      this.$refs.table.toggleDetails(row);
     },
     sendMessageForTrip() {
       this.isSubmittingMessage = true;

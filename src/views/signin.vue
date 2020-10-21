@@ -15,6 +15,9 @@
 import SignIn from "@/components/customs/auth/signin.vue";
 
 export default {
+  metaInfo: {
+    title: "Admin signin"
+  },
   components: {
     SignIn
   },

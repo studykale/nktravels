@@ -14,17 +14,15 @@
       <b-navbar-item tag="router-link" to="/about#gallery">
         Gallery
       </b-navbar-item>
-      <b-navbar-dropdown hoverable arrowless boxed label="Features">
-        <b-navbar-item href="#">
-          Honey Moon
-        </b-navbar-item>
-        <b-navbar-item href="#">
-          Safaris
-        </b-navbar-item>
-        <b-navbar-item href="#">
-          Hotels
-        </b-navbar-item>
-      </b-navbar-dropdown>
+      <b-navbar-item href="tel:+254757227976">
+        <span>
+          <phone-call-icon
+            size="1x"
+            class="has-text-success mr-1"
+          ></phone-call-icon>
+        </span>
+        Call Us
+      </b-navbar-item>
     </template>
 
     <template slot="end">
@@ -43,8 +41,13 @@
 </template>
 
 <script>
+import { PhoneCallIcon } from "vue-feather-icons";
+
 export default {
   name: "Nav",
+  components: {
+    PhoneCallIcon
+  },
   props: {
     type: String,
     blacken: {

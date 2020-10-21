@@ -54,6 +54,11 @@ const routes = [
     }
   },
   {
+    path: "/successful-booking",
+    name: "SuccessfulBooking",
+    component: () => import("../views/successfulbooking.vue")
+  },
+  {
     path: "/gallery",
     name: "Gallery",
     component: () => import("../views/gallery.vue"),

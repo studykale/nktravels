@@ -16,17 +16,6 @@
         <b-tag rounded>Fully Booked</b-tag>
       </div>
       <p class="has-text-grey-bis is-size-6">{{ description }}</p>
-      <!-- <router-link
-        :to="{
-          path: 'detail',
-          params: {
-            companyId: trip.companyId,
-            tripName: trip.name,
-            tripId: trip.id
-          }
-        }"
-        class="is-size-6"
-        >Read more</router-link -->
       <a @click="getDetails" type="is-link">Read more</a>
     </div>
   </div>

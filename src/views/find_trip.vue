@@ -3,6 +3,58 @@
     <Nav />
 
     <div v-if="!loadingDestinations" class=" container">
+      <b-carousel>
+        <b-carousel-item>
+          <header>
+            <img src="../assets/honeymoon.jpg" alt="NK travel safaris ads" />
+            <div class="content flex f-column has-text-centered items-center">
+              <div class="mt-5">
+                <h2
+                  class="has-text-white is-size-3 mb-3 has-text-weight-semibold is-family-sans-serif"
+                >
+                  Honey Moon
+                </h2>
+                <p class="has-text-white">Organize trips and destinations</p>
+              </div>
+            </div>
+          </header>
+        </b-carousel-item>
+        <b-carousel-item>
+          <header>
+            <img src="../assets/camping.jpg" alt="NK travel safaris ads" />
+            <div class="content flex f-column has-text-centered items-center">
+              <div class="mt-5">
+                <h2
+                  class="has-text-white is-size-3 mb-3 has-text-weight-semibold is-family-sans-serif"
+                >
+                  Camping
+                </h2>
+                <p class="has-text-white">
+                  Get closer to nature with awesome camping deals.
+                </p>
+              </div>
+            </div>
+          </header>
+        </b-carousel-item>
+        <b-carousel-item>
+          <header>
+            <img src="../assets/wildsafari.jpg" alt="NK travel safaris ads" />
+            <div class="content flex f-column has-text-centered items-center">
+              <div class="mt-5">
+                <h2
+                  class="has-text-white is-size-3 mb-3 has-text-weight-semibold is-family-sans-serif"
+                >
+                  Wild Safari
+                </h2>
+                <p class="has-text-white">
+                  Experience the wild chase and grazing elephants not forgeting
+                  the fantastic night sky with blazing stars.
+                </p>
+              </div>
+            </div>
+          </header>
+        </b-carousel-item>
+      </b-carousel>
       <div class="px-3 py-2">
         <div class="flex j-between items-center">
           <h2
@@ -22,7 +74,40 @@
               <span class="icon-text">Search</span>
             </button>
 
-            <b-dropdown position="is-bottom-left" aria-role="list">
+            <b-dropdown
+              position="is-bottom-left"
+              append-to-body
+              aria-role="menu"
+            >
+              <button class="button is-light is-rounded" slot="trigger">
+                <filter-icon
+                  size="1.5x"
+                  class="has-text-primary icon-btn"
+                ></filter-icon>
+                <span class="icon-text">
+                  Filter
+                </span>
+              </button>
+
+              <b-dropdown-item custom aria-role="menuitem">
+                <span class="has-text-weight-semibold">Category</span>
+              </b-dropdown-item>
+              <hr class="dropdown-divider" />
+
+              <b-dropdown-item aria-role="listitem">Honey moon</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">Camping</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">Safari</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">Hiking</b-dropdown-item>
+              <hr class="dropdown-divider" aria-role="menuitem" />
+              <b-dropdown-item aria-role="listitem">
+                <span>Price</span>
+              </b-dropdown-item>
+              <b-dropdown-item value="logout" aria-role="menuitem">
+                Number of days.
+              </b-dropdown-item>
+            </b-dropdown>
+
+            <!-- <b-dropdown position="is-bottom-left" aria-role="list">
               <button class="button is-light is-rounded" slot="trigger">
                 <filter-icon
                   size="1.5x"
@@ -35,7 +120,7 @@
               <b-dropdown-item aria-role="listitem">Category</b-dropdown-item>
               <b-dropdown-item aria-role="listitem">No of days</b-dropdown-item>
               <b-dropdown-item aria-role="listitem">Location</b-dropdown-item>
-            </b-dropdown>
+            </b-dropdown> -->
           </div>
         </div>
         <hr />
@@ -54,7 +139,8 @@
         </div>
       </div>
     </div>
-    <div class="flex items-centered centered py-4 h-100" v-else>
+    <div class="flex items-centered f-column centered py-4 h-100" v-else>
+      <img src="../assets/logo.png" height="100" width="100" alt="" />
       <p class="is-family-sans-serif">Loading...</p>
     </div>
     <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
@@ -187,5 +273,37 @@ export default {
 
 .items-centered {
   align-items: center !important;
+}
+
+header {
+  position: relative;
+  height: 350px;
+  border-radius: 7px;
+
+  @media screen and (max-width: 640px) {
+    margin: 0 1em;
+  }
+
+  img {
+    height: 350px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    mix-blend-mode: overlay;
+    object-fit: cover;
+
+    object-position: bottom;
+    border-radius: 7px;
+  }
+
+  .content {
+    justify-content: center;
+    background: #000000a1;
+    border-radius: 7px;
+    height: 350px;
+    align-items: center;
+    padding: 3em 1em;
+  }
 }
 </style>
