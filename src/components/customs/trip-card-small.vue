@@ -27,8 +27,7 @@
         }"
         class="is-size-6"
         >Read more</router-link -->
-        <a @click="getDetails" type="is-link">Read more</a>
-      
+      <a @click="getDetails" type="is-link">Read more</a>
     </div>
   </div>
 </template>
@@ -39,7 +38,9 @@ export default {
   props: ["image", "name", "description", "days", "booked", "trip"],
   methods: {
     getDetails() {
-      this.$router.push({ path: `/detail/company/${this.trip.companyId}/${this.trip.name}/${this.trip.id}`, })
+      this.$router.push({
+        path: `/detail/company/${this.trip.companyId}/${this.trip.name}/${this.trip.id}`
+      });
     }
   }
 };

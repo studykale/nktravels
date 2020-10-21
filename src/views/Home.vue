@@ -245,10 +245,7 @@
               Newsletter
             </h2>
             <p class="mb-2 is-family-primary">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam
-              minus vel odit doloribus quia vero cupiditate itaque sed, quisquam
-              tempore quibusdam sequi placeat explicabo culpa ipsa? Eum quas
-              quaerat voluptatem.
+              Do you want to get awesome deals at the moment they come up. Well, subscribe to our newsletter and get notified
             </p>
             <b-field class="mt-3">
               <b-input

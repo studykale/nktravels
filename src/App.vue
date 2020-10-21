@@ -9,6 +9,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap");
 @import "~bulma/sass/utilities/_all";
 
+html {
+  padding-bottom: -2em;
+}
+
+body {
+  margin-bottom: -2em !important;
+}
+
 .header-title {
   font-family: "Fira Sans", sans-serif;
 }
