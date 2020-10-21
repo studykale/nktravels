@@ -6,13 +6,17 @@
         <div v-if="!errorFound" class="columns mx-2">
           <div class="column is-full-mobile is-half-desktop is-half-widescreen">
             <b-carousel
-            v-if="destination.images.length > 0"
+              v-if="destination.images.length > 0"
               :autoplay="false"
               :overlay="gallery"
               @click="switchGallery(true)"
               :indicator-inside="false"
             >
-              <b-carousel-item class="my-3" v-for="(image, i) in destination.images" :key="i">
+              <b-carousel-item
+                class="my-3"
+                v-for="(image, i) in destination.images"
+                :key="i"
+              >
                 <span class="image">
                   <img :src="image" />
                 </span>
@@ -24,11 +28,7 @@
               />
               <template slot="indicators" slot-scope="props">
                 <figure class="al image" :draggable="false">
-                  <img
-                    :draggable="false"
-                    :src="props.i"
-                    :title="props.i"
-                  />
+                  <img :draggable="false" :src="props.i" :title="props.i" />
                 </figure>
               </template>
             </b-carousel>
@@ -51,7 +51,7 @@
               <div class="my-3">
                 <span v-html="destination.description"></span>
               </div>
-              
+
               <br />
               <h4 class="has-text-weight-semibold is-family-sans-serif">
                 Packages
@@ -60,11 +60,16 @@
               <br />
               <br />
               <b-table
-                :data="data"
+                :data="destination.packages"
                 :columns="columns"
-                :selected.sync="selected"
                 focusable
+                detailed
               >
+                <template slot="detail" slot-scope="props">
+                  <p>
+                    {{ props.row.description }}
+                  </p>
+                </template>
               </b-table>
             </div>
           </div>
@@ -94,17 +99,18 @@
                     <b-input required v-model.trim="$v.email.$model"></b-input>
                   </b-field>
                   <b-field label="Type">
-                    <b-radio v-model="type" name="name" native-value="inquiry">
+                    <b-radio size="is-small" v-model="type" name="name" native-value="inquiry">
                       Inquiry
                     </b-radio>
                     <b-radio
+                      size="is-small"
                       v-model="type"
                       name="name"
                       native-value="complaint"
                     >
                       Complaint
                     </b-radio>
-                    <b-radio v-model="type" name="name" native-value="request">
+                    <b-radio size="is-small" v-model="type" name="name" native-value="request">
                       Request
                     </b-radio>
                   </b-field>
@@ -119,7 +125,7 @@
                       v-model="$v.message.$model"
                     ></b-input>
                   </b-field>
-                  <button class="button is-primary mt-3" type="submit">
+                  <button :class="{ 'is-loading': isSubmittingMessage }" class="button is-primary mt-3" type="submit">
                     Send
                   </button>
                 </form>
@@ -127,10 +133,17 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center centered">
-          <b-message title="Destination not found" type="is-danger" aria-close-label="Close message">
+        <div v-else class="flex items-center centered">
+          <b-message
+            title="Destination not found"
+            type="is-danger"
+            aria-close-label="Close message"
+          >
             {{ errorMessage }}
             <span class="mt-2">
+
+
+
               <router-link to="/find-trip">
                 Go home
               </router-link>
@@ -150,43 +163,7 @@
 <script>
 import NavClient from "@/components/utilities/nav.vue";
 import db, { companyCollection } from "../db";
-const data = [
-  {
-    id: 1,
-    first_name: "Jesse",
-    last_name: "Simmons",
-    date: "2016-10-15 13:43:27",
-    gender: "Male"
-  },
-  {
-    id: 2,
-    first_name: "John",
-    last_name: "Jacobs",
-    date: "2016-12-15 06:00:53",
-    gender: "Male"
-  },
-  {
-    id: 3,
-    first_name: "Tina",
-    last_name: "Gilbert",
-    date: "2016-04-26 06:26:28",
-    gender: "Female"
-  },
-  {
-    id: 4,
-    first_name: "Clarence",
-    last_name: "Flores",
-    date: "2016-04-10 10:28:46",
-    gender: "Male"
-  },
-  {
-    id: 5,
-    first_name: "Anne",
-    last_name: "Lee",
-    date: "2016-12-06 14:38:38",
-    gender: "Female"
-  }
-];
+
 
 import { validationMixin } from "vuelidate";
 const {
@@ -206,8 +183,7 @@ export default {
     return {
       gallery: false,
       images: [],
-      data,
-      selected: data[1],
+      selected: [],
       email: "",
       type: "inquiry",
       name: "",
@@ -216,28 +192,24 @@ export default {
       loadingDestination: false,
       columns: [
         {
-          field: "id",
-          label: "ID",
+          field: "name",
+          label: "Name",
           width: "40",
-          numeric: true
+         
         },
         {
-          field: "first_name",
-          label: "First Name"
+          field: "noOfDays",
+          label: "Number of days"
         },
         {
-          field: "last_name",
-          label: "Last Name"
+          field: "cost",
+          label: "Price"
         },
         {
-          field: "date",
-          label: "Date",
+          field: "numberOfPeople",
+          label: "No of people",
           centered: true
         },
-        {
-          field: "gender",
-          label: "Gender"
-        }
       ],
       isSubmittingMessage: false,
       errorMessage: "",
@@ -260,6 +232,9 @@ export default {
     }
   },
   methods: {
+    toggle(row) {
+      this.$refs.table.toggleDetails(row)
+    },
     sendMessageForTrip() {
       this.isSubmittingMessage = true;
       db.collection(
@@ -272,6 +247,7 @@ export default {
         })
         .then(() => {
           this.isSubmittingMessage = false;
+          this.name = this.email = this.message = "";
           this.$buefy.snackbar.open({
             message: "Message sent successfully. Thank you for your feedback.",
             position: "is-bottom-right",
@@ -280,6 +256,8 @@ export default {
         })
         .catch(error => {
           this.isSubmittingMessage = false;
+          this.name = this.email = this.message = "";
+
           this.$buefy.snackbar.open({
             message: "Message was not sent. " + error.message,
             position: "is-bottom-right",
@@ -342,22 +320,25 @@ export default {
   },
   created() {
     this.loadingDestination = true;
-    companyCollection.doc(this.$route.params.companyId)
-    .collection("destinations")
-    .doc(this.$route.params.tripId)
-    .get()
-    .then(result => {
-      this.loadingDestination = false;
-      if(result.exists) {
-        this.destination = result.data();
-      }
-    })
-    .catch(error => {
-      this.loadingDestination = false;
-      // If the destination was not loaded.
-      this.errorFound = true;
-      this.errorMessage = "Sorry we were unable to access the destination details. " + error.message;
-    })
+    companyCollection
+      .doc(this.$route.params.companyId)
+      .collection("destinations")
+      .doc(this.$route.params.tripId)
+      .get()
+      .then(result => {
+        this.loadingDestination = false;
+        if (result.exists) {
+          this.destination = result.data();
+        }
+      })
+      .catch(error => {
+        this.loadingDestination = false;
+        // If the destination was not loaded.
+        this.errorFound = true;
+        this.errorMessage =
+          "Sorry we were unable to access the destination details. " +
+          error.message;
+      });
   }
 };
 </script>
