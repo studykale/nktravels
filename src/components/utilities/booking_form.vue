@@ -201,37 +201,37 @@ export default {
       };
 
       this.booking = true;
-      db.collection(
-        `companies/${this.companyId}/destinations`
-      )
-      .doc(this.tripId)
-      .set({
-        bookings: data
-      }, { merge: true })
-        
+      db.collection(`companies/${this.companyId}/destinations`)
+        .doc(this.tripId)
+        .set(
+          {
+            bookings: data
+          },
+          { merge: true }
+        )
+
         .then(() => {
           this.booking = false;
           let today = new Date();
-         
-          db.collection("notifications")
-          .add({
-            client: data.name,
-            email: data.email,
-            message: "New reservation was made for " + this.trip.name,
-            created: Timestamp.now()
-          })
-          .then(() => {
-             this.firstName = this.secondName = this.email = this.phoneNumber = this.secondaryPhone =
-            "";
-          this.startDate = today;
-          this.message = "";
-          this.endDate = new Date(today.setDate(today.getMonth() + 2));
-          this.$router.replace("/successful-booking");
 
-          })
-          .catch(() => {
-            this.$router.replace("/successful-booking");
-          })
+          db.collection("notifications")
+            .add({
+              client: data.name,
+              email: data.email,
+              message: "New reservation was made for " + this.trip.name,
+              created: Timestamp.now()
+            })
+            .then(() => {
+              this.firstName = this.secondName = this.email = this.phoneNumber = this.secondaryPhone =
+                "";
+              this.startDate = today;
+              this.message = "";
+              this.endDate = new Date(today.setDate(today.getMonth() + 2));
+              this.$router.replace("/successful-booking");
+            })
+            .catch(() => {
+              this.$router.replace("/successful-booking");
+            });
         })
         .catch(error => {
           this.booking = false;

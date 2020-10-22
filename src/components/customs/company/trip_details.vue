@@ -53,12 +53,15 @@
           <p>{{ destination.views || "0" }} Views</p>
         </div>
 
-      
-
         <p>{{ destination.packages.length || 0 }} trip package(s)</p>
         <hr />
         <div class="flex row">
-          <b-button @click="destinationDetails()" class="mt-3 mr-2" type="is-info">More details</b-button>
+          <b-button
+            @click="destinationDetails()"
+            class="mt-3 mr-2"
+            type="is-info"
+            >More details</b-button
+          >
           <b-button @click="confirmDelete" class="mt-3 mr-2" type="is-danger"
             >Delete</b-button
           >
@@ -142,30 +145,30 @@ export default {
             .doc(arg1.company)
             .collection("destinations")
             .doc(arg1.id)
-        )
-          // companyCollection
-          //   .doc(arg1.company)
-          //   .collection("destinations")
-          //   .doc(arg1.id)
-          //   .collection("bookings")
-          //   .get()
-          //   .then(bookings => {
-          //     if (!bookings.empty) {
-          //       bookings.forEach(b => {
-          //         let id = b.id;
-          //         let bData = b.data();
-          //         this.bookings.push({
-          //           id,
-          //           ...bData
-          //         });
-          //       });
-          //     }
-          //   })
-          //   .catch(() => {
-          //     this.bookings = null;
-          //   });
-        });
+        );
+        // companyCollection
+        //   .doc(arg1.company)
+        //   .collection("destinations")
+        //   .doc(arg1.id)
+        //   .collection("bookings")
+        //   .get()
+        //   .then(bookings => {
+        //     if (!bookings.empty) {
+        //       bookings.forEach(b => {
+        //         let id = b.id;
+        //         let bData = b.data();
+        //         this.bookings.push({
+        //           id,
+        //           ...bData
+        //         });
+        //       });
+        //     }
+        //   })
+        //   .catch(() => {
+        //     this.bookings = null;
+        //   });
       });
+    });
   }
 };
 </script>

@@ -260,19 +260,17 @@ export default {
     },
     sendMessageForTrip() {
       this.isSubmittingMessage = true;
-      db.collection(
-        `companies/${this.$route.params.companyId}/destinations/`
-      )
-      .doc(this.$route.params.tripId)
-      .set({
-        messages : {
-          name: this.name,
-          email: this.email,
-          message: this.message,
-          type: this.type
-        }
-      })
-      .then(() => {
+      db.collection(`companies/${this.$route.params.companyId}/destinations/`)
+        .doc(this.$route.params.tripId)
+        .set({
+          messages: {
+            name: this.name,
+            email: this.email,
+            message: this.message,
+            type: this.type
+          }
+        })
+        .then(() => {
           this.isSubmittingMessage = false;
           this.name = this.email = this.message = "";
           this.$buefy.snackbar.open({
@@ -281,7 +279,7 @@ export default {
             type: "is-info"
           });
         })
-      .catch(error => {
+        .catch(error => {
           this.isSubmittingMessage = false;
           this.name = this.email = this.message = "";
 
