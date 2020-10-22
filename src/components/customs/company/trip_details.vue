@@ -53,22 +53,12 @@
           <p>{{ destination.views || "0" }} Views</p>
         </div>
 
-        <div class="my-3">
-          <p class="is-size-7 has-text-grey">
-            Bookings
-          </p>
-          <p v-if="destination.bookings">
-            {{ destination.bookings.length }} Bookings
-          </p>
-          <p v-else>
-            No bookings made.
-          </p>
-        </div>
+      
 
         <p>{{ destination.packages.length || 0 }} trip package(s)</p>
         <hr />
         <div class="flex row">
-          <b-button class="mt-3 mr-2" type="is-info">Edit</b-button>
+          <b-button @click="destinationDetails()" class="mt-3 mr-2" type="is-info">More details</b-button>
           <b-button @click="confirmDelete" class="mt-3 mr-2" type="is-danger"
             >Delete</b-button
           >
@@ -94,10 +84,14 @@ export default {
       openSide: false,
       tripId: null,
       destination: null,
-      companyId: null
+      companyId: null,
+      bookings: null
     };
   },
   methods: {
+    destinationDetails() {
+      alert("we are here");
+    },
     confirmDelete() {
       this.openSide != this.openSide;
       this.$buefy.dialog.confirm({
@@ -148,9 +142,30 @@ export default {
             .doc(arg1.company)
             .collection("destinations")
             .doc(arg1.id)
-        );
+        )
+          // companyCollection
+          //   .doc(arg1.company)
+          //   .collection("destinations")
+          //   .doc(arg1.id)
+          //   .collection("bookings")
+          //   .get()
+          //   .then(bookings => {
+          //     if (!bookings.empty) {
+          //       bookings.forEach(b => {
+          //         let id = b.id;
+          //         let bData = b.data();
+          //         this.bookings.push({
+          //           id,
+          //           ...bData
+          //         });
+          //       });
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.bookings = null;
+          //   });
+        });
       });
-    });
   }
 };
 </script>

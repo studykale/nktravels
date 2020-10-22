@@ -6,7 +6,7 @@
           class="is-family-sans-serif flex items-center  has-text-weight-semibold mb-4 is-size-5"
         >
           <span class="mr-3">
-            <Logo/>
+            <Logo />
           </span>
           NK Travels
         </h2>

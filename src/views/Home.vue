@@ -190,7 +190,7 @@
               Popular places
             </h2>
           </div> -->
-          <!-- <b-tabs class="mt-3" v-model="activeTab">
+    <!-- <b-tabs class="mt-3" v-model="activeTab">
             <b-tab-item label="Wild Safari">
               <div class="flex scrollWrapper" v-dragscroll.nochildren.x="true">
                 <TripCard :image="tab1Image" />
@@ -232,7 +232,7 @@
               </div>
             </b-tab-item>
           </b-tabs> -->
-        <!-- </div>
+    <!-- </div>
       </div>
     </section> -->
     <section class="has-background-warning my-3">
@@ -255,7 +255,6 @@
                   placeholder="Enter your email address."
                   type="email"
                   icon="phone"
-                  
                 >
                 </b-input>
                 <p class="control">
@@ -337,8 +336,8 @@ export default {
   },
   methods: {
     addSubscribers() {
-      if(!this.subEmail || this.subEmail.length < 3) {
-        this.$buefy.snackbar.open("Please enter your email.")
+      if (!this.subEmail || this.subEmail.length < 3) {
+        this.$buefy.snackbar.open("Please enter your email.");
       }
       db.collection("subscribers")
         .add({

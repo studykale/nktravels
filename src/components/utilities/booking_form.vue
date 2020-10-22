@@ -144,7 +144,7 @@
 <script>
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
-import db from "../../db";
+import db, { Timestamp } from "../../db";
 // import tripCardVue from '../customs/trip-card.vue';
 
 export default {
@@ -202,18 +202,36 @@ export default {
 
       this.booking = true;
       db.collection(
-        `companies/${this.companyId}/destinations/${this.tripId}/bookings`
+        `companies/${this.companyId}/destinations`
       )
-        .add(data)
+      .doc(this.tripId)
+      .set({
+        bookings: data
+      }, { merge: true })
+        
         .then(() => {
           this.booking = false;
           let today = new Date();
-          this.firstName = this.secondName = this.email = this.phoneNumber = this.secondaryPhone =
+         
+          db.collection("notifications")
+          .add({
+            client: data.name,
+            email: data.email,
+            message: "New reservation was made for " + this.trip.name,
+            created: Timestamp.now()
+          })
+          .then(() => {
+             this.firstName = this.secondName = this.email = this.phoneNumber = this.secondaryPhone =
             "";
           this.startDate = today;
           this.message = "";
           this.endDate = new Date(today.setDate(today.getMonth() + 2));
           this.$router.replace("/successful-booking");
+
+          })
+          .catch(() => {
+            this.$router.replace("/successful-booking");
+          })
         })
         .catch(error => {
           this.booking = false;

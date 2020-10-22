@@ -140,6 +140,11 @@ const routes = [
         component: () => import("@/views/admin/profile.vue")
       },
       {
+        path: "",
+        name: "DestinationDetails",
+        component: () => import("@/views/admin/ad_destination_details.vue")
+      },
+      {
         path: "bookings",
         name: "Bookings",
         component: () => import("@/views/admin/bookings.vue")
