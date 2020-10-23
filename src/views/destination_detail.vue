@@ -269,7 +269,7 @@ export default {
             message: this.message,
             type: this.type
           }
-        })
+        }, { merge: true })
         .then(() => {
           this.isSubmittingMessage = false;
           this.name = this.email = this.message = "";
