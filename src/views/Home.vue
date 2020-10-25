@@ -39,8 +39,7 @@
           </h2>
           <br />
           <p class="has-text-white is-family-primary">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum
-            fugiat nemo reprehenderit quasi minus porro!
+            Are you hopping to your next trip? Well, Make it more safe and memorable by using our trip services.
           </p>
           <router-link class="button is-primary mt-4" to="/find-trip"
             >Book a trip</router-link
@@ -64,9 +63,10 @@
             <p
               class="has-text-grey-dark has-text-center-mobile is-family-primary"
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-              consectetur architecto suscipit? Magnam voluptatem accusantium id
-              harum quo delectus autem!
+              We not only plan fot the trip but also help save you money by early booking discounts, special fares, hotel deals and travel agencies. We provide education, 
+              training and resource materials to our 
+              members to equip them with tools to offer 
+              high quality services.
             </p>
           </div>
           <div class="column"></div>
@@ -86,8 +86,9 @@
                   Awesome support
                 </h4>
                 <p class="has-text-black-ter is-family-primary">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                  vitae libero sit sed, eum atque!
+                  Enjoy 24/7 support from our site. 
+                  Travel across the country and throughout the world. 
+                  We are aiming to make you a happy traveler.
                 </p>
               </div>
             </div>
@@ -106,8 +107,7 @@
                   Captivating
                 </h4>
                 <p class="has-text-black-ter is-family-primary">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                  vitae libero sit sed, eum atque!
+                  See for yourself and conquer the world. Strong working relationships with NK travel suppliers and the latest in computer reservations technology enable travel advisors to access the most up-todate information on how to get you the best value. 
                 </p>
               </div>
             </div>
@@ -126,8 +126,7 @@
                   Ease and Comfort
                 </h4>
                 <p class="has-text-black-ter is-family-primary">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                  vitae libero sit sed, eum atque!
+                  We work for you and will do everything we can to meet your travel needs. Sometimes we even go the extra mile to help you achive the best. Travel with us! Make your dreams come true.
                 </p>
               </div>
             </div>
