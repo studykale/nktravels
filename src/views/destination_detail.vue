@@ -262,14 +262,17 @@ export default {
       this.isSubmittingMessage = true;
       db.collection(`companies/${this.$route.params.companyId}/destinations/`)
         .doc(this.$route.params.tripId)
-        .set({
-          messages: {
-            name: this.name,
-            email: this.email,
-            message: this.message,
-            type: this.type
-          }
-        }, { merge: true })
+        .set(
+          {
+            messages: {
+              name: this.name,
+              email: this.email,
+              message: this.message,
+              type: this.type
+            }
+          },
+          { merge: true }
+        )
         .then(() => {
           this.isSubmittingMessage = false;
           this.name = this.email = this.message = "";

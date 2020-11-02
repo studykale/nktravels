@@ -16,6 +16,17 @@
             >
             </b-input>
           </b-field>
+          <b-field
+            label="Message"
+          >
+            <b-input
+              type="textarea"
+              required
+              maxlength="50"
+              placeholder="Please add your trip summary."
+              v-model="summary"
+            >
+          </b-field>
           <ckeditor
             :editor="editor"
             v-model="description"
@@ -250,6 +261,7 @@ export default {
   data() {
     return {
       name: "",
+      summary: "",
       dropFiles: [],
       description: "<p>Trip description.</p>",
       editor: ClassicEditor,
@@ -350,6 +362,7 @@ export default {
     addNewTrip() {
       let tripData = {
         name: this.name,
+        summary: this.summary,
         description: this.description,
         images: this.uploadedImages,
         packages: this.packages,
