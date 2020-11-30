@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavClient :type="primary" />
+    <NavClient />
     <div class="my-4">
       <div class="container mx-a">
         <div class="mx-4">
@@ -27,9 +27,9 @@
           <div class="card team">
             <div class="card-content">
               <img
-                style="object-position: center"
-                src="https://source.unsplash.com/random?meeting"
-                alt="Water"
+                style="object-position: top"
+                src="../assets/team1.jpg"
+                alt="Team one"
               />
             </div>
           </div>
@@ -41,9 +41,8 @@
             Our Gallery
           </h2>
           <p class="my-3 w-75">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
-            laboriosam voluptate ex id omnis numquam modi, asperiores error
-            officiis repellat?
+            The Safaris team is never left behind, we have fun by going out,
+            eating out. We believe in building teamwork from the great outdoors.
           </p>
           <masonry
             :cols="{ default: 4, 1000: 3, 700: 2, 400: 1 }"
@@ -51,74 +50,52 @@
           >
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?water"
-                  alt="Water"
-                />
+                <img src="../assets/rhino.jpeg" alt="Rhino" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?beach"
-                  alt="Beach"
-                />
+                <img src="../assets/team5.jpeg" alt="Team five" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?forest"
-                  alt="Forest"
-                />
+                <img src="../assets/van.jpg" alt="Forest" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?jungle"
-                  alt="Jungle"
-                />
+                <img src="../assets/team4.jpg" alt="Jungle" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?safari"
-                  alt="Safari"
-                />
+                <img src="../assets/team3.jpg" alt="Safari" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/daily?forest"
-                  alt="Forest"
-                />
+                <img src="../assets/team2.jpg" alt="Forest" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?desert"
-                  alt="Desert"
-                />
+                <img src="../assets/man.jpeg" alt="Desert" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?mountains"
-                  alt="skiing"
-                />
+                <img src="../assets/team.jpeg" alt="The team" />
               </div>
             </div>
             <div class="card">
               <div class="card-content">
-                <img
-                  src="https://source.unsplash.com/weekly?pyramids"
-                  alt="Egypt"
-                />
+                <img src="../assets/nissan.jpeg" alt="Nissan" />
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <img src="../assets/birds.jpeg" alt="Nissan" />
               </div>
             </div>
           </masonry>

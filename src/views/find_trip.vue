@@ -14,7 +14,10 @@
                 >
                   Honey Moon
                 </h2>
-                <p class="has-text-white">Find the right place to share your new chapter at the charming and romantic destinations</p>
+                <p class="has-text-white">
+                  Find the right place to share your new chapter at the charming
+                  and romantic destinations
+                </p>
               </div>
             </div>
           </header>

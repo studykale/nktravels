@@ -444,7 +444,6 @@ export default {
         .catch(() => {
           this.$buefy.snackbar.open(`Failed to delete file`);
         });
-      console.log("file", this.dropFiles[index].name);
     },
     initTrip(destination) {
       this.editing = true;

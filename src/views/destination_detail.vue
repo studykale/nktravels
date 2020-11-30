@@ -7,13 +7,9 @@
           <div class="column is-full-mobile is-half-desktop is-half-widescreen">
             <b-carousel
               v-if="destination.images.length > 0"
-              :autoplay="false"
-              :overlay="gallery"
-              @click="switchGallery(true)"
               :indicator-inside="false"
             >
               <b-carousel-item
-                class="my-3"
                 v-for="(image, i) in destination.images"
                 :key="i"
               >
@@ -21,19 +17,19 @@
                   <img :src="image" />
                 </span>
               </b-carousel-item>
-              <span
-                v-if="gallery"
-                @click="switchGallery(false)"
-                class="modal-close is-large"
-              />
               <template slot="indicators" slot-scope="props">
-                <figure class="al image" :draggable="false">
-                  <img :draggable="false" :src="props.i" :title="props.i" />
-                </figure>
+                <span class="al image">
+                  <b-image
+                    :src="destination.images[props.i]"
+                    ratio="16by9"
+                    :lazy="false"
+                    :alt="destination.name"
+                  ></b-image>
+                </span>
               </template>
             </b-carousel>
-            <div v-else>
-              <p class="is-family-sans-serif">No images attached.</p>
+            <div v-else class="flex j-center">
+              <p>No images attached.</p>
             </div>
             <div class="my-3">
               <b-button @click="bookDestination" type="is-primary is-light"
@@ -51,7 +47,10 @@
                 Details
               </h4>
               <div class="my-3">
-                <span v-html="destination.description"></span>
+                <span
+                  class="description-wrapper"
+                  v-html="destination.description"
+                ></span>
               </div>
 
               <br />
@@ -210,6 +209,13 @@ export default {
       message: "",
       destination: {},
       loadingDestination: false,
+      carousels: [
+        { text: "Slide 1", color: "primary" },
+        { text: "Slide 2", color: "info" },
+        { text: "Slide 3", color: "success" },
+        { text: "Slide 4", color: "warning" },
+        { text: "Slide 5", color: "danger" }
+      ],
       columns: [
         {
           field: "name",
@@ -390,5 +396,35 @@ img {
 
 .radio.control-label:hover {
   color: grey !important;
+}
+
+.description-wrapper {
+  h1 {
+    font-weight: bold;
+    color: black;
+  }
+
+  p,
+  li {
+    font-size: 0.85rem;
+  }
+
+  ul {
+    padding-left: 1em;
+    margin: 1em 0;
+
+    li {
+      list-style-type: disc;
+    }
+  }
+}
+
+span.al.image {
+  height: 70px !important;
+  width: 90px;
+
+  img {
+    border-radius: 4px;
+  }
 }
 </style>
