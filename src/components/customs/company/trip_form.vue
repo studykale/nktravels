@@ -16,16 +16,14 @@
             >
             </b-input>
           </b-field>
-          <b-field
-            label="Message"
-          >
+          <b-field label="Message">
             <b-input
               type="textarea"
               required
               maxlength="50"
               placeholder="Please add your trip summary."
               v-model="summary"
-            >
+            />
           </b-field>
           <ckeditor
             :editor="editor"

@@ -1,6 +1,6 @@
 <template>
   <div class="pt-2">
-    <div class="container mx-4">
+    <div v-if="!loadingDestination" class="container mx-4">
       <h2
         class="is-family-primary is-size-5 has-text-black-bis has-text-weight-semibold"
       >
@@ -16,7 +16,7 @@
         Description
       </h4>
       <hr />
-      <span v-html="destination.description"></span>
+      <span class="d-description" v-html="destination.description"></span>
       <br />
       <h4 class="has-text-weight-semibold is-family-sans-serif">
         Packages
@@ -56,7 +56,7 @@
       </b-table>
       <br />
       <h4 class="has-text-weight-semibold is-family-sans-serif">
-        Messages
+        Bookings
       </h4>
       <br />
       <br />
@@ -81,6 +81,9 @@
         </template>
       </b-table>
       <br />
+    </div>
+    <div v-else class="h-100 items-center flex centered">
+      <p class="is-family-sans-serif">Loading destination details</p>
     </div>
   </div>
 </template>
@@ -170,6 +173,7 @@ export default {
         this.loadingDestination = false;
 
         if (result.exists) {
+          console.log("destination details", result.data());
           this.destination = result.data();
         }
       })
@@ -180,4 +184,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.d-description {
+  ul {
+    margin: 1em !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: grey;
+  }
+
+  ul li {
+    margin-left: 1.2em;
+    list-style-type: disc;
+  }
+}
+</style>

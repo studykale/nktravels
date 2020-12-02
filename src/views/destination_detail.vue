@@ -14,7 +14,7 @@
                 :key="i"
               >
                 <span class="image">
-                  <img :src="image" />
+                  <b-image :src="image" ratio="4by3"></b-image>
                 </span>
               </b-carousel-item>
               <template slot="indicators" slot-scope="props">
@@ -37,11 +37,29 @@
               >
             </div>
             <div class="mt-3">
+              <small
+                class="is-size-7 has-text-grey is-capitalized has-text-weight-semibold"
+                >{{ destination.category }}</small
+              >
               <h2
-                class="is-size-4 has-text-weight-semibold is-family-sans-serif"
+                class="is-size-4  has-text-weight-semibold is-family-sans-serif"
               >
                 {{ destination.name }}
               </h2>
+              <p class="has-text-grey is-size-6 is-family-sans-serif">
+                {{ destination.location }}
+              </p>
+              <hr />
+              <div>
+                <b-tag
+                  rounded
+                  class="mr-2"
+                  v-for="(tag, i) in destination.amenities"
+                  :key="i"
+                >
+                  {{ tag }}
+                </b-tag>
+              </div>
               <hr />
               <h4 class="has-text-weight-semibold is-family-sans-serif">
                 Details
@@ -209,13 +227,7 @@ export default {
       message: "",
       destination: {},
       loadingDestination: false,
-      carousels: [
-        { text: "Slide 1", color: "primary" },
-        { text: "Slide 2", color: "info" },
-        { text: "Slide 3", color: "success" },
-        { text: "Slide 4", color: "warning" },
-        { text: "Slide 5", color: "danger" }
-      ],
+
       columns: [
         {
           field: "name",
@@ -266,16 +278,30 @@ export default {
     },
     sendMessageForTrip() {
       this.isSubmittingMessage = true;
+      if (this.destination.messages) {
+        this.destination.messages.push({
+          name: this.name,
+          email: this.email,
+          message: this.message,
+          type: this.type
+        });
+      } else {
+        this.destination.messages = [
+          {
+            name: this.name,
+            email: this.email,
+            message: this.message,
+            type: this.type
+          }
+        ];
+      }
+
+      console.log("this dest", this.destination);
       db.collection(`companies/${this.$route.params.companyId}/destinations/`)
         .doc(this.$route.params.tripId)
         .set(
           {
-            messages: {
-              name: this.name,
-              email: this.email,
-              message: this.message,
-              type: this.type
-            }
+            messages: this.destination.messages
           },
           { merge: true }
         )
@@ -362,6 +388,7 @@ export default {
       .then(result => {
         this.loadingDestination = false;
         if (result.exists) {
+          console.log("destination", result.data());
           this.destination = result.data();
         }
       })

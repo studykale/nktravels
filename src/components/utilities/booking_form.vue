@@ -201,11 +201,18 @@ export default {
       };
 
       this.booking = true;
+      if (this.trip.bookings && typeof this.trip.bookings == Array) {
+        this.trip.bookings.push(data);
+      } else {
+        this.trip.bookings = [data];
+      }
+      this.trip.bookings.push(data);
+      console.log("trip", this.trip);
       db.collection(`companies/${this.companyId}/destinations`)
         .doc(this.tripId)
         .set(
           {
-            bookings: data
+            bookings: this.trip.bookings
           },
           { merge: true }
         )

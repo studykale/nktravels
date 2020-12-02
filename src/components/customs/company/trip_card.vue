@@ -1,6 +1,11 @@
 <template>
   <div class="t-card">
-    <img v-if="image" class="rounded" :src="image" alt="Beach picture" />
+    <b-image
+      v-if="image"
+      ratio="16by9"
+      :src="image"
+      alt="Beach picture"
+    ></b-image>
     <img src="../../../assets/beach.jpg" alt="NK travels trip" v-else />
     <div class="t-content">
       <h2 class="has-text-weight-bold has-text-black-bis">{{ name }}</h2>
@@ -31,6 +36,7 @@ export default {
 <style lang="scss" scoped>
 .t-card {
   min-width: 170px;
+  max-width: 250px;
   margin-bottom: 10px;
   padding: 4px;
   transition: all ease-in 200ms;
@@ -45,7 +51,7 @@ export default {
     margin-right: auto;
   }
 
-  img {
+  img.rounded {
     border-radius: 10px;
   }
 

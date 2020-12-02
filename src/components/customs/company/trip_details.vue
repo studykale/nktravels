@@ -19,6 +19,10 @@
         >
           {{ destination.name }}
         </h2>
+        <p class="has-text-grey has-family-sans-serif">
+          {{ destination.location }}
+        </p>
+        <br />
         <div class="flex f-column mb-2">
           <p class="is-size-7 has-text-grey">Category</p>
           <b class="mb-3">{{ destination.category }}</b>
@@ -27,7 +31,10 @@
           <p class="is-size-7 has-text-grey">
             Description
           </p>
-          <span class="mb-3" v-html="destination.description"></span>
+          <span
+            class="mb-3 description"
+            v-html="destination.description"
+          ></span>
         </div>
         <div class="mb-3">
           <p class="is-size-7 has-text-grey">
@@ -38,6 +45,7 @@
             v-if="destination.images.length > 0"
           >
             <img
+              class="mr-1"
               v-for="(img, i) in destination.images"
               :key="i"
               :src="img"
@@ -48,10 +56,17 @@
             <p>Trip does not have any images.</p>
           </div>
         </div>
-        <div class="my-3">
-          <p class="is-size-7 has-text-grey">Views</p>
-          <p>{{ destination.views || "0" }} Views</p>
-        </div>
+        <hr />
+        <b-field grouped group-multiline>
+          <div class="control">
+            <b-taglist attached>
+              <b-tag type="is-dark">
+                <eye-icon size="1.5x" class="flex has-text-white"></eye-icon>
+              </b-tag>
+              <b-tag type="is-info">0</b-tag>
+            </b-taglist>
+          </div>
+        </b-field>
 
         <p>{{ destination.packages.length || 0 }} trip package(s)</p>
         <hr />
@@ -65,9 +80,6 @@
           <b-button @click="confirmDelete" class="mt-3 mr-2" type="is-danger"
             >Delete</b-button
           >
-          <b-button v-if="destination.bookings" type="is-primary" class="mt-3">
-            Bookings
-          </b-button>
         </div>
       </div>
     </div>
@@ -75,12 +87,13 @@
 </template>
 
 <script>
-import { Minimize2Icon } from "vue-feather-icons";
+import { Minimize2Icon, EyeIcon } from "vue-feather-icons";
 import { companyCollection, storageRef } from "../../../db";
 
 export default {
   components: {
-    Minimize2Icon
+    Minimize2Icon,
+    EyeIcon
   },
   data() {
     return {
@@ -92,8 +105,11 @@ export default {
     };
   },
   methods: {
+    showBookingModal() {},
     destinationDetails() {
-      alert("we are here");
+      this.$router.push(
+        `/admin/destination-details/company/${this.companyId}/destination/${this.destination.id}`
+      );
     },
     confirmDelete() {
       this.openSide != this.openSide;
@@ -120,8 +136,6 @@ export default {
                 storageRef.storage.refFromURL(e).delete();
               });
             }
-
-            companyCollection.doc(result.id).delete();
           }
         })
         .catch(error => {
@@ -139,6 +153,7 @@ export default {
       this.$root.$on("openTripDetails", arg1 => {
         console.log("arg1", arg1);
         this.openSide = arg1.show;
+        this.companyId = arg1.company;
         this.$bind(
           "destination",
           companyCollection
@@ -146,27 +161,6 @@ export default {
             .collection("destinations")
             .doc(arg1.id)
         );
-        // companyCollection
-        //   .doc(arg1.company)
-        //   .collection("destinations")
-        //   .doc(arg1.id)
-        //   .collection("bookings")
-        //   .get()
-        //   .then(bookings => {
-        //     if (!bookings.empty) {
-        //       bookings.forEach(b => {
-        //         let id = b.id;
-        //         let bData = b.data();
-        //         this.bookings.push({
-        //           id,
-        //           ...bData
-        //         });
-        //       });
-        //     }
-        //   })
-        //   .catch(() => {
-        //     this.bookings = null;
-        //   });
       });
     });
   }
@@ -186,5 +180,28 @@ span p {
   height: 100px;
   width: 120px;
   object-fit: center;
+}
+
+.description {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 0.85rem !important;
+    color: grey;
+  }
+
+  ul {
+    list-style: disc !important;
+    margin: 1em !important;
+  }
+
+  ul li {
+    margin-left: 1.4em;
+  }
 }
 </style>

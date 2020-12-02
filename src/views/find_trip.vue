@@ -109,21 +109,6 @@
                 Number of days.
               </b-dropdown-item>
             </b-dropdown>
-
-            <!-- <b-dropdown position="is-bottom-left" aria-role="list">
-              <button class="button is-light is-rounded" slot="trigger">
-                <filter-icon
-                  size="1.5x"
-                  class="has-text-primary icon-btn"
-                ></filter-icon>
-                <span class="icon-text">
-                  Filter
-                </span>
-              </button>
-              <b-dropdown-item aria-role="listitem">Category</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem">No of days</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem">Location</b-dropdown-item>
-            </b-dropdown> -->
           </div>
         </div>
         <hr />
@@ -131,7 +116,7 @@
           <TripCardSmall
             v-for="dest in destinations"
             :key="dest.id"
-            :days="dest.days || 1"
+            :days="dest.packages[0].noOfDays || 1"
             :name="dest.name"
             :trip="dest"
             :image="
@@ -193,20 +178,16 @@ export default {
     setDestinations(c) {
       this.loadingDestinations = true;
       c.forEach(company => {
-        // console.log("company", company);
         companyCollection
           .doc(`${company.id}`)
           .collection("destinations")
           .get()
           .then(querySnapshots => {
             this.loadingDestinations = false;
-            console.log("queried");
-            if (querySnapshots.empty) {
-              console.log("empty trips");
-            } else {
+
+            if (!querySnapshots.empty) {
               querySnapshots.forEach(doc => {
                 let destination = doc.data();
-                console.log("data", destination);
 
                 this.destinations.push({
                   id: doc.id,
@@ -223,7 +204,7 @@ export default {
               position: "is-top-right",
 
               message:
-                "Sorry we were unable tomload all trips. " + error.message
+                "Sorry we were unable to load all trips. " + error.message
             });
           });
       });

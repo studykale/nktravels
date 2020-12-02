@@ -1,6 +1,6 @@
 <template>
   <div class="trip-card">
-    <img :src="image" alt="Image card" />
+    <b-image :src="image" ratio="16by9" alt="Image card"></b-image>
     <div class="tagWrapper">
       <b-tag class="has-background-white has-text-weight-bold mr-2" rounded
         >{{ days }} days</b-tag
@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .trip-card {
-  max-width: 250px;
+  max-width: 280px;
   margin: 0.75em;
   border-radius: 5px;
   box-shadow: 0 2px 5px #d4dade;
@@ -67,8 +67,8 @@ export default {
   img {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
   }
 
   .content {
